@@ -1,0 +1,24 @@
+<IfModule mod_php5.c>
+   php_value short_open_tag 1
+</IfModule>
+
+
+#php_flag display_errors on
+#php_value error_reporting -1
+
+RewriteEngine On
+#RewriteBase /ekspedisi
+RewriteCond %{REQUEST_URI} ^system.*
+RewriteRule ^(.*)$ /index.php?/$1 [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+##RewriteRule ^(.*)$ index.php?/$1 [L]
+RewriteRule .* index.php
+
+##Header set Access-Control-Allo-Origin:*
+
+<FilesMatch "\.(php)$">
+  <IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+  </IfModule>
+</FilesMatch>  
