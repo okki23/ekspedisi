@@ -31,7 +31,7 @@ class Pic_vendor_m extends Parent_Model {
             'vendor_pic_email' => $dt['vendor_pic_email']);
         $this->db->where('vendor_code', $data['vendor_code']);
         $this->db->where('vendor_pic_email', $data['vendor_pic_email']);
-        return $this->db->delete($this->_table_name);
+        return $this->db->delete($this->_table_name_alias);
     }
 
     public function get_data_pic_vendor($dt) {

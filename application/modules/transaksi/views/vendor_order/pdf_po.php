@@ -1,6 +1,6 @@
 <br>
                     
-                    <h5 align="center"> No.CO : <?php echo $list_a->sales_order_code; ?>  </h5>
+                    <h5 align="center"> No.CO : <?php echo $list_a->vendor_order_index; ?>  </h5>
                      
                     <br>
 <div style="margin-left:auto; margin-right: auto;">
@@ -14,7 +14,7 @@
         <tr>
             <td style="width:20%;">Customer Name</td>
             <td style="width:2%;"> : </td>
-            <td style="width:26%;"> <?php echo $list_a->customer_name; ?> </td>
+            <td style="width:26%;"> <?php echo $list_a->vendor_name; ?> </td>
 
             <td colspan="2" style="width:2%;"> &nbsp; </td>
 
@@ -25,18 +25,18 @@
         <tr>
             <td style="width:20%;">Customer Code</td>
             <td style="width:2%;"> : </td>
-            <td style="width:26%;"> <?php echo $list_a->customer_code; ?>  </td>
+            <td style="width:26%;"> <?php echo $list_a->vendor_code; ?>  </td>
 
             <td colspan="2" style="width:2%;"> &nbsp; </td>
 
             <td style="width:20%;"> TOP </td>
             <td style="width:2%;"> : </td>
-            <td style="width:26%;"> <?php echo $list_a->customer_top; ?> Hari </td>
+            <td style="width:26%;"> <?php echo $list_a->vendor_top; ?> Hari </td>
         </tr>
         <tr>
             <td style="width:20%;">Customer Phone</td>
             <td style="width:2%;"> : </td>
-            <td style="width:26%;"> <?php echo $list_a->customer_phone; ?> </td>
+            <td style="width:26%;"> <?php echo $list_a->vendor_phone; ?> </td>
 
             <td colspan="2" style="width:2%;"> &nbsp; </td>
 
@@ -47,7 +47,7 @@
         <tr>
             <td style="width:20%;">Customer Address</td>
             <td style="width:2%;"> : </td>
-            <td style="width:26%;"> <?php echo $list_a->customer_address; ?> </td>
+            <td style="width:26%;"> <?php echo $list_a->vendor_address; ?> </td>
 
             <td colspan="2" style="width:2%;"> &nbsp; </td>
 
@@ -69,7 +69,7 @@
         <tr>
             <td style="width:20%;">Customer PIC Phone</td>
             <td style="width:2%;"> : </td>
-            <td style="width:26%;"> <?php echo $list_a->pic_customer_phone; ?> </td>
+            <td style="width:26%;"> <?php echo $list_a->pic_vendor_phone; ?> </td>
 
             <td colspan="2" style="width:2%;"> &nbsp; </td>
 
@@ -78,9 +78,9 @@
             <td style="width:26%;">  <?php echo $list_a->estimation_date_arrival; ?>  </td>
         </tr>
         <tr>
-            <td style="width:20%;"> </td>
-            <td style="width:2%;">  </td>
-            <td style="width:26%;">  </td>
+            <td style="width:20%;"> Driver </td>
+            <td style="width:2%;"> : </td>
+            <td style="width:26%;"> <?php echo $list_a->vendor_driver_name; ?>  </td>
 
             <td colspan="2" style="width:2%;"> &nbsp; </td>
 
@@ -89,9 +89,9 @@
             <td style="width:26%;">  <?php echo $list_a->order_create; ?> <br>(089610595064 / Dummy)  </td>
         </tr>
         <tr>
-            <td style="width:20%;"> </td>
-            <td style="width:2%;">  </td>
-            <td style="width:26%;">  </td>
+            <td style="width:20%;"> Vehicle No </td>
+            <td style="width:2%;"> : </td>
+            <td style="width:26%;"> <?php echo $list_a->vendor_vehicle_no; ?> </td>
 
             <td colspan="2" style="width:2%;"> &nbsp; </td>
 
@@ -119,10 +119,10 @@
         $jumlah = 0;
         $row_price = 0;
         foreach ($list_b as $row) {
-            $ceksochild = $this->customer_order_m->cek_child_so($row->sales_order_code);
-            $list_child = $this->customer_order_m->list_child_so($row->sales_order_code);
+            $ceksochild = $this->vendor_order_m->cek_child_po($row->vendor_order_code);
+            $list_child = $this->vendor_order_m->list_child_po($row->vendor_order_code);
             echo "<tr align='center'>
-                 <td style='text-align:center;'>" . $row->sales_order_code . "</td>
+                 <td style='text-align:center;'>" . $row->vendor_order_code . "</td>
                  <td style='text-align:center;'>" . $row->date_order . "</td>
                  <td style='text-align:center;'>" . strtoupper($row->type_service) . "</td>
                  <td style='text-align:center;'>" . ucwords($row->charge_option) . "</td>
@@ -166,12 +166,12 @@
         <tr>
             <td style="width:30%;"> Customer Over Weight </td>
             <td style="width:2%;"> : </td>
-            <td colspan="6" style="width:68%;"> <?php echo $list_a->customer_over_weight; ?> (KG) </td>
+            <td colspan="6" style="width:68%;"> <?php echo $list_a->vendor_over_weight; ?> (KG) </td>
         </tr>
         <tr>
             <td style="width:30%;"> Customer Over Weight Price </td>
             <td style="width:2%;"> : </td>
-            <td colspan="6" style="width:68%;"> Rp . <?php echo $list_a->customer_orver_price_weight; ?> </td>
+            <td colspan="6" style="width:68%;"> Rp . <?php echo $list_a->vendor_orver_price_weight; ?> </td>
         </tr>
         <tr>
             <td style="width:30%;"> Overnight </td>
@@ -212,7 +212,7 @@
         <tr>
             <td style="width:20%;">DP Payment</td>
             <td style="width:2%;"> : </td>
-            <td style="width:27%;"> Rp. <?php echo number_format($list_a->amount_dp_debt); ?> </td>
+            <td style="width:27%;"> Rp. <?php echo number_format($list_a->amount_dp); ?> </td>
 
             <td colspan="2" style="width:2%;"> </td>
 
@@ -223,14 +223,14 @@
          <tr>
                             <td style="width:20%;"> <b>Total Debt</b></td>
                             <td style="width:2%;"><b> : </b></td>
-                            <td style="width:78%;" colspan="6"> <b>Rp. <?php echo number_format($list_a->amount_sales - $list_a->amount_dp_debt); ?> </b></td>
+                            <td style="width:78%;" colspan="6"> <b>Rp. <?php echo number_format($list_a->amount_sales - $list_a->amount_dp); ?> </b></td>
 
                             
 
                          
                         </tr>
                         <tr>
-                            <td colspan="7" style="width:100%;"> <b><i> Terbilang : "<?php echo terbilang($list_a->amount_sales - $list_a->amount_dp_debt); ?>"</i></b></td>
+                            <td colspan="7" style="width:100%;"> <b><i> Terbilang : "<?php echo terbilang($list_a->amount_sales - $list_a->amount_dp); ?>"</i></b></td>
                            
                         </tr>
     </table>

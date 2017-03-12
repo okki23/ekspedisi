@@ -18,6 +18,7 @@ class Pic_driver_m extends Parent_Model {
 
     protected $_table_name = 'm_driver_vendor';
     protected $_table_name_lefjo = 'm_driver_vendor a';
+    protected $_table_name_alias = 'm_driver_vendor';
     protected $_primary_key = 'vendor_driver_id';
     protected $_primary_filter = 'intval';
     protected $_column_order = array('vendor_driver_id','vendor_code','vendor_driver_name','vendor_driver_phone','vendor_driver_license','vendor_driver_idcard');

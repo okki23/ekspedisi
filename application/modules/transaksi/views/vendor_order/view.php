@@ -6,7 +6,7 @@
                 <h4 class="modal-title">Modular Print All SO </h4>
             </div>
             <div class="modal-body">
-                <form action="<?php echo base_url('transaksi/vendor_order/get_print_all_so_fields')?>" method="POST" enctype="multipart/form-data">
+                <form action="<?php echo base_url('transaksi/vendor_order/get_print_all_po_fields')?>" method="POST" enctype="multipart/form-data">
                 <table border='0' cellpadding='6' cellspacing='0'> 
                 <tr style='font-weight:bold;' > 
                     <td> <input type="checkbox" name="params[]" value="a.id" readonly="readonly" checked="checked" > ID </td>
@@ -75,7 +75,7 @@
                         $dataSearch = array(
                             "url" => base_url('transaksi/' . $this->router->fetch_class() . '/index'),
                             "data_filter" => array(
-                                "customer_name" => "Customer Name"
+                                "vendor_name" => "Vendor Name"
                                 
                             )
                         );
@@ -88,7 +88,7 @@
                                 <tr>
 
 <!--<th style="width:20%;">SO Number</th>-->
-                                    <th style="width:20%;">Customer Name</th>
+                                    <th style="width:20%;">Vendor Name</th>
                                     <th style="width:20%;">Summary PO Open</th>
                                     <th style="width:20%;">Summary PO Close</th>
 <!--<th style="width:20%;">Type Service</th>-->
@@ -113,8 +113,8 @@
                                             <td>" .
                                         $this->button_lib->render(array('anchor' => 'upd', 'url' => 'transaksi/' . $this->router->fetch_class() . '/store/' . $row->id, 'text' => 'Edit'))
                                         . " " . $this->button_lib->render(array('anchor' => 'del', 'url' => 'transaksi/' . $this->router->fetch_class() . '/delete/' . $row->id, 'text' => 'Delete'))
-                                        . " " . $this->button_lib->render(array('anchor' => 'file', 'url' => 'transaksi/' . $this->router->fetch_class() . '/print_so_by_id/' . $row->id, 'text' => 'Print SO Transaction'))
-                                        . " " . $this->button_lib->render(array('anchor' => 'file', 'url' => 'transaksi/' . $this->router->fetch_class() . '/print_so_final/' . $row->id, 'text' => 'Print SO Final'))
+                                        . " " . $this->button_lib->render(array('anchor' => 'file', 'url' => 'transaksi/' . $this->router->fetch_class() . '/print_po_by_id/' . $row->id, 'text' => 'Print PO Transaction'))
+                                        . " " . $this->button_lib->render(array('anchor' => 'file', 'url' => 'transaksi/' . $this->router->fetch_class() . '/print_po_final/' . $row->id, 'text' => 'Print PO Final'))
                                         . "</td> 
                                         </tr>
                                         ";

@@ -101,7 +101,7 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <label> Traffic Name</label>
+                                                <label style="color:red;"> Traffic Name</label>
                                                 <select name="id_traffic_name" class="form-control" id="id_traffic_name">
                                                     <option value="">--Pilih--</option>
                                                     <?php
@@ -125,7 +125,7 @@
 
                                             <div class="form-group">
                                                 <label> Customer Order Index </label>
-                                                <input type="text" name="sales_order_code" id="customer_order_index" value="<?php echo $list->sales_order_code; ?>" class="form-control">
+                                                <input type="text" name="customer_order_index" id="customer_order_index" value="<?php echo $list->customer_order_index; ?>" class="form-control">
                                             </div>
                                             <div class="form-group">
                                                 <label> Customer Address</label>
@@ -572,7 +572,7 @@
                                             <thead>
                                                 <tr>
                                                     <th> No. </th>
-                                                    <th> Customer Order Code </th>
+                                                    <th> Customer Order Number </th>
                                                     <th> Date Order </th>
                                                     <th> Type Service </th>
                                                     <th> Charge Option </th>
@@ -730,6 +730,7 @@
                 </div>
                 <!--collapse end-->
                 <div align="center">
+                     <label> Field Inputan Dengan Label Merah Wajib Diperiksa Sebelum Melakukan Perubahan/Penginputan Data</label>
                     <br>
                     <hr>
                     <button type="submit" class="btn btn-success"> Pick Customer Order </button>
@@ -1078,7 +1079,7 @@
                 //console.log(konten);
                 var obj = JSON.parse(konten);
                 //console.log(obj.sales_order_status);
-                $("#nomorso_detail").html(obj.sales_order_status);
+                $("#nomorso_detail").html(obj.sales_order_code);
                 $("#origin_detail").html(obj.origin);
                 $("#vehicle_detail").html(obj.vehicle);
                 $("#cubication_detail").html(obj.cubication);
@@ -1450,7 +1451,8 @@
     function get_list_so_fix(codecust) {
         var devpoint = $("#delivery_point").val();
         $.getJSON("<?php echo base_url('transaksi/customer_order/get_list_so_fix/'); ?>" + codecust, function (data) {
-            $('#sofix tbody').empty();
+        console.log(data);    
+        $('#sofix tbody').empty();
             var items = [];
             var iSum = 0;
             var no = 0;
@@ -1506,6 +1508,45 @@
         var custcode = $("#customer_code").val();
         $("#list_ltl").hide();
         $("#news").on("click", function () {
+             $("#origin").val('');
+            $("#sales_order_code").val('');
+            $("#sales_order_status").val('');
+            $("#date_order").val('');
+            $("#province").val('');
+            $("#island_single").val('');
+            $("#district").val('');
+            $("#vehicle").val('');
+            $("#type_service").val('');
+            $("#sc").val('');
+            $("#moda").val('');
+            $("#district_info").val('');
+            $("#cubication").val('');
+            $("#tonase").val('');
+            $("#charge_option").val('');
+            $("#address").val('');
+            $("#resleadtime").html('');
+            $("#lead_time").val('');
+            $("#price").val('');
+            $("#list_ftl").hide();
+            $("#list_ltl").hide();
+            $("#lmd").hide();
+            $("#savemodal_sub").hide();
+            $("#idsosub").val('');
+            $("#soparent").val('');
+            $("#origin_sub").val('');
+            $("#province_sub").val('');
+            $("#district_sub").val('');
+            $("#vehicle_sub").val('');
+            $("#district_info_sub").val('');
+            $("#cubication_sub").val('');
+            $("#tonase_sub").val('');
+            $("#charge_option_sub").val('');
+            $("#address_sub").val('');
+            $("#service_mode").val('');
+
+            $("#lead_time_sub").val('');
+            $("#price_sub").val('');
+                    
             $('#myModal').modal('show');
             /*
             $.get("<?php echo base_url('transaksi/customer_order/get_last_id_post');?>",function(lastid){
@@ -1732,7 +1773,7 @@
             $("#tonase_sub").val('');
             $("#charge_option_sub").val('');
             $("#address_sub").val('');
-
+        $("#service_mode").val('');
             $("#lead_time_sub").val('');
             $("#price_sub").val('');
         });
@@ -1826,6 +1867,44 @@
                     get_list_so_fix(custcode);
                     $('#myModal').modal('hide');
                     $("#idsofix").val('');
+            $("#origin").val('');
+            $("#sales_order_code").val('');
+            $("#sales_order_status").val('');
+            $("#date_order").val('');
+            $("#province").val('');
+            $("#island_single").val('');
+            $("#district").val('');
+            $("#vehicle").val('');
+            $("#type_service").val('');
+            $("#sc").val('');
+            $("#moda").val('');
+            $("#district_info").val('');
+            $("#cubication").val('');
+            $("#tonase").val('');
+            $("#charge_option").val('');
+            $("#address").val('');
+            $("#resleadtime").html('');
+            $("#lead_time").val('');
+            $("#price").val('');
+            $("#list_ftl").hide();
+            $("#list_ltl").hide();
+            $("#lmd").hide();
+            $("#savemodal_sub").hide();
+            $("#idsosub").val('');
+            $("#soparent").val('');
+            $("#origin_sub").val('');
+            $("#province_sub").val('');
+            $("#district_sub").val('');
+            $("#vehicle_sub").val('');
+            $("#district_info_sub").val('');
+            $("#cubication_sub").val('');
+            $("#tonase_sub").val('');
+            $("#charge_option_sub").val('');
+            $("#address_sub").val('');
+            $("#service_mode").val('');
+            $("#lead_time_sub").val('');
+            $("#price_sub").val('');
+                    
                     /*
                     $("#origin").val('');
                     $("#sales_order_code").val('');
@@ -2129,6 +2208,7 @@
         function get_list_so_fix(codecust) {
 
             $.getJSON("<?php echo base_url('transaksi/customer_order/get_list_so_fix/'); ?>" + codecust, function (data) {
+                console.log(data);
                 $('#sofix tbody').empty();
                 var items = [];
                 var iSum = 0;

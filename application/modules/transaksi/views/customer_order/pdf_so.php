@@ -1,6 +1,6 @@
 <br>
                     
-                    <h5 align="center"> No.CO : <?php echo $list_a->sales_order_code; ?>  </h5>
+                    <h5 align="center"> No.CO : <?php echo $list_a->customer_order_index; ?>  </h5>
                      
                     <br>
 <div style="margin-left:auto; margin-right: auto;">
@@ -118,9 +118,18 @@
         <?php
         $jumlah = 0;
         $row_price = 0;
+         $child_price = 0;
         foreach ($list_b as $row) {
-            $ceksochild = $this->customer_order_m->cek_child_so($row->sales_order_code);
-            $list_child = $this->customer_order_m->list_child_so($row->sales_order_code);
+            /*
+                                $ceksochild = $this->customer_order_m->cek_child_so($row->sales_order_code);
+                                $list_child = $this->customer_order_m->list_child_so($row->sales_order_code);
+                                 */
+                                if($row->type_service == 'ftl'){
+                                    $ceksochild = $this->customer_order_m->cek_child_so($row->sales_order_code);
+                                    $list_child = $this->customer_order_m->list_child_so($row->sales_order_code);
+                                }else{
+                                     $ceksochild = 0;
+                                }
             echo "<tr align='center'>
                  <td style='text-align:center;'>" . $row->sales_order_code . "</td>
                  <td style='text-align:center;'>" . $row->date_order . "</td>
@@ -212,7 +221,7 @@
         <tr>
             <td style="width:20%;">DP Payment</td>
             <td style="width:2%;"> : </td>
-            <td style="width:27%;"> Rp. <?php echo number_format($list_a->amount_dp_debt); ?> </td>
+            <td style="width:27%;"> Rp. <?php echo number_format($list_a->amount_dp); ?> </td>
 
             <td colspan="2" style="width:2%;"> </td>
 
@@ -223,14 +232,14 @@
          <tr>
                             <td style="width:20%;"> <b>Total Debt</b></td>
                             <td style="width:2%;"><b> : </b></td>
-                            <td style="width:78%;" colspan="6"> <b>Rp. <?php echo number_format($list_a->amount_sales - $list_a->amount_dp_debt); ?> </b></td>
+                            <td style="width:78%;" colspan="6"> <b>Rp. <?php echo number_format($list_a->amount_sales - $list_a->amount_dp); ?> </b></td>
 
                             
 
                          
                         </tr>
                         <tr>
-                            <td colspan="7" style="width:100%;"> <b><i> Terbilang : "<?php echo terbilang($list_a->amount_sales - $list_a->amount_dp_debt); ?>"</i></b></td>
+                            <td colspan="7" style="width:100%;"> <b><i> Terbilang : "<?php echo terbilang($list_a->amount_sales - $list_a->amount_dp); ?>"</i></b></td>
                            
                         </tr>
     </table>

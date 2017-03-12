@@ -5,10 +5,13 @@
         <div class="col-lg-12">
             <section class="panel">
                 <header class="panel-heading">
-                    Print Preview Customer Order (Sales Order)
+                    Print Preview Vendor Order (Purchase Order)
+                    <?php
+                    //var_dump($list_a);
+                    ?>
                 </header>
                 <div class="panel-body">
-                    <a href="<?php echo base_url('transaksi/customer_order/so_final_pdf/'.$idprint); ?>" target="_blank" class="btn btn-primary"> Print </a>
+                    <a href="<?php echo base_url('transaksi/vendor_order/so_final_pdf/'.$idprint); ?>" target="_blank" class="btn btn-primary"> Print </a>
                     <br>
                     &nbsp;
                     <table class="table" border="0">
@@ -19,14 +22,14 @@
                     </table>
                     <br>
                     
-                    <h5 align="center"> No.CO : <?php echo $list_a->sales_order_code; ?>  </h5>
+                    <h5 align="center"> No.CO : <?php echo $list_a->vendor_order_index; ?>  </h5>
                      
                     <br>
                     <table class="table" border="0">
                         <tr>
-                            <td style="width:20%;">Customer Name</td>
+                            <td style="width:20%;">Vendor Name</td>
                             <td style="width:2%;"> : </td>
-                            <td style="width:20%;"> <?php echo $list_a->customer_name; ?> </td>
+                            <td style="width:20%;"> <?php echo $list_a->vendor_name; ?> </td>
 
                             <td colspan="2" style="width:2%;"> &nbsp; </td>
 
@@ -35,20 +38,20 @@
                             <td style="width:20%;"> <?php echo strtoupper($list_a->payment_type); ?> </td>
                         </tr>
                         <tr>
-                            <td style="width:20%;">Customer Code</td>
+                            <td style="width:20%;">Vendor Code</td>
                             <td style="width:2%;"> : </td>
-                            <td style="width:20%;"> <?php echo $list_a->customer_code; ?>  </td>
+                            <td style="width:20%;"> <?php echo $list_a->vendor_code; ?>  </td>
 
                             <td colspan="2" style="width:2%;"> &nbsp; </td>
 
                             <td style="width:20%;"> TOP </td>
                             <td style="width:2%;"> : </td>
-                            <td style="width:20%;"> <?php echo $list_a->customer_top; ?> Hari </td>
+                            <td style="width:20%;"> <?php echo $list_a->vendor_top; ?> Hari </td>
                         </tr>
                         <tr>
-                            <td style="width:20%;">Customer Phone</td>
+                            <td style="width:20%;">Vendor Phone</td>
                             <td style="width:2%;"> : </td>
-                            <td style="width:20%;"> <?php echo $list_a->customer_phone; ?> </td>
+                            <td style="width:20%;"> <?php echo $list_a->vendor_phone; ?> </td>
 
                             <td colspan="2" style="width:2%;"> &nbsp; </td>
 
@@ -57,9 +60,9 @@
                             <td style="width:20%;"> <?php echo strtoupper($list_a->delivery_type); ?> </td>
                         </tr>
                         <tr>
-                            <td style="width:20%;">Customer Address</td>
+                            <td style="width:20%;">Vendor Address</td>
                             <td style="width:2%;"> : </td>
-                            <td style="width:20%;"> <?php echo $list_a->customer_address; ?> </td>
+                            <td style="width:20%;"> <?php echo $list_a->vendor_address; ?> </td>
 
                             <td colspan="2" style="width:2%;"> &nbsp; </td>
 
@@ -68,7 +71,7 @@
                             <td style="width:20%;"> <?php echo $list_a->traffic_name; ?> </td>
                         </tr>
                         <tr>
-                            <td style="width:20%;">Customer PIC</td>
+                            <td style="width:20%;">Vendor PIC</td>
                             <td style="width:2%;"> : </td>
                             <td style="width:20%;"> <?php echo $list_a->pic_name; ?> </td>
 
@@ -79,9 +82,9 @@
                             <td style="width:20%;"> <?php echo $list_a->date_pickup_order; ?> </td>
                         </tr>
                         <tr>
-                            <td style="width:20%;">Customer PIC Phone</td>
+                            <td style="width:20%;">Vendor PIC Phone</td>
                             <td style="width:2%;"> : </td>
-                            <td style="width:20%;"> <?php echo $list_a->pic_customer_phone; ?> </td>
+                            <td style="width:20%;"> <?php echo $list_a->pic_vendor_phone; ?> </td>
 
                             <td colspan="2" style="width:2%;"> &nbsp; </td>
 
@@ -90,9 +93,9 @@
                             <td style="width:20%;">  <?php echo $list_a->estimation_date_arrival; ?>  </td>
                         </tr>
                         <tr>
-                            <td style="width:20%;"> </td>
-                            <td style="width:2%;">  </td>
-                            <td style="width:20%;">  </td>
+                            <td style="width:20%;"> Driver </td>
+                            <td style="width:2%;"> : </td>
+                            <td style="width:20%;">  <?php echo $list_a->vendor_driver_name; ?>  </td>
 
                             <td colspan="2" style="width:2%;"> &nbsp; </td>
 
@@ -101,9 +104,9 @@
                             <td style="width:20%;">  <?php echo $list_a->order_create; ?> <br> (089610595064 / Dummy)  </td>
                         </tr>
                         <tr>
-                            <td style="width:20%;"> </td>
-                            <td style="width:2%;">  </td>
-                            <td style="width:20%;">  </td>
+                            <td style="width:20%;"> Vehicle No</td>
+                            <td style="width:2%;"> : </td>
+                            <td style="width:20%;"> <?php echo $list_a->vendor_vehicle_no; ?> </td>
 
                             <td colspan="2" style="width:2%;"> &nbsp; </td>
 
@@ -115,7 +118,7 @@
                     <br>
                     <table class="table" border="0" style="width: 100%;">
                         <tr>
-                            <td > Customer Order Code </td>
+                            <td > Vendor Order Code </td>
                             <td> Date Order </td>
                             <td> Type Service </td>
                             <td> Charge Option </td>
@@ -129,15 +132,29 @@
                         <tr>
                             <?php
                             $jumlah = 0;
+                            $jumlah_price_parent = 0;
                             $row_price = 0;
+                            $jumlah_price_sub = 0;
                             foreach ($list_b as $row) {
-
-                                $ceksochild = $this->customer_order_m->cek_child_so($row->sales_order_code);
-                                $list_child = $this->customer_order_m->list_child_so($row->sales_order_code);
+                                /*
+                                $ceksochild = $this->vendor_order_m->cek_child_so($row->vendor_order_code);
+                                $list_child = $this->vendor_order_m->list_child_so($row->vendor_order_code);                               
+                                 */
+                                
+                               
+                                    if($row->type_service == 'ftl'){
+                                        $ceksochild = $this->vendor_order_m->cek_child_po($row->vendor_order_code);
+                                        $list_child = $this->vendor_order_m->list_child_po($row->vendor_order_code);
+                                    }else{
+                                        $ceksochild = 0;
+                                        
+                                    }
+                                
                                 //var_dump($list_child);
-
+                                 
+                                
                                 echo "<tr>";
-                                echo "<td>" . $row->sales_order_code . "</td>";
+                                echo "<td>" . $row->vendor_order_code . "</td>";
                                 echo "<td>" . $row->date_order . "</td>";
                                 echo "<td>" . strtoupper($row->type_service) . "</td>";
                                 echo "<td>" . ucwords($row->charge_option) . "</td>";
@@ -147,9 +164,9 @@
                                 echo "<td>" . $row->district . "</td>";
                                 echo "<td style='text_align:right;'> Rp. " . number_format($row->price) . "</td>";
                                 echo "</tr>";
-
+                                
                                 if ($ceksochild > 0) {
-                                    $child_price = 0;
+                                    $jumlah_price_sub = 0;
                                     foreach ($list_child as $row_child) {
                                         echo "<tr>";
                                         echo "<td> </td>";
@@ -163,36 +180,37 @@
                                         echo "<td style='text_align:right;'> Rp. " . number_format($row_child->price) . "</td>";
                                         echo "</tr>";
                                          
-                                        $child_price = $child_price + $row_child->price;
-                                        
+                                        $jumlah_price_sub += $row_child->price;
+                                        //var_dump($jumlah_price_sub);
                                     }
                                     
                                 }
 
                                 
-                                $row_price = $row_price + $row->price + $child_price;
+                                //$row_price = $row_price + $row->price + $jumlah_price_sub;
                                  
-                                $jumlah = $row_price;
+                                $jumlah_price_parent += $row->price ;
                             }
+                            $jumlahx = $jumlah_price_parent + $jumlah_price_sub;
                             ?>
                         </tr>
                         <tr>
                             <td colspan="8"> TOTAL </td>
-                            <td> <?php echo "Rp. ". number_format($jumlah); ?>  </td>
+                            <td> <?php echo "Rp. ". number_format($jumlahx); ?>  </td>
                         </tr>
                     </table>
                     <br>
 
                     <table class="table" border="0">
                         <tr>
-                            <td style="width:20%;"> Customer Over Weight </td>
+                            <td style="width:20%;"> Vendor Over Weight </td>
                             <td style="width:2%;"> : </td>
-                            <td colspan="6" style="width:74%;"> <?php echo $list_a->customer_over_weight; ?> (KG) </td>
+                            <td colspan="6" style="width:74%;"> <?php echo $list_a->vendor_over_weight; ?> (KG) </td>
                         </tr>
                         <tr>
-                            <td style="width:20%;"> Customer Over Weight Price </td>
+                            <td style="width:20%;"> Vendor Over Weight Price </td>
                             <td style="width:2%;"> : </td>
-                            <td colspan="6" style="width:74%;"> Rp . <?php echo $list_a->customer_orver_price_weight; ?> </td>
+                            <td colspan="6" style="width:74%;"> Rp . <?php echo $list_a->vendor_orver_price_weight; ?> </td>
                         </tr>
                         <tr>
                             <td style="width:20%;"> Overnight </td>
@@ -216,7 +234,19 @@
 
                             <td style="width:20%;"> PPN </td>
                             <td style="width:2%;"> : </td>
+                            <td style="width:20%;"> 
+                            <?php
+                            if($list_a->ppn_val != '' || $list_a->ppn_val != NULL){
+                            ?>
                             <td style="width:20%;"> <?php echo "Rp. ". number_format($list_a->ppn_val); ?>  (<?php echo $list_a->ppn; ?>%)   </td>
+                            <?php
+                            }else{
+                            ?>
+                            <td style="width:20%;"> <?php echo "Rp. 0 (0%)  "; ?></td>
+                            <?php
+                            }
+                            ?>   
+                            </td>
                         </tr>
                         <tr>
                             <td style="width:20%;">DP Date</td>
@@ -227,12 +257,28 @@
 
                             <td style="width:20%;"> PPH </td>
                             <td style="width:2%;"> : </td>
+                            <td style="width:20%;"> 
+                             <?php
+                            if($list_a->pph_val != '' || $list_a->pph_val != NULL){                          
+                            ?>
+                            
                             <td style="width:20%;"> <?php echo "Rp. ". number_format($list_a->pph_val); ?>  (<?php echo $list_a->pph; ?>%)   </td>
+                            
+                            <?php 
+                            }else{
+                            ?>
+                            
+                            <td style="width:20%;"> <?php echo "Rp. 0 (0%)"; ?></td>
+                            
+                            <?php
+                            }
+                            ?>
+                            </td>
                         </tr>
                         <tr>
                             <td style="width:20%;">DP Payment</td>
                             <td style="width:2%;"> : </td>
-                            <td style="width:20%;"> Rp. <?php echo number_format($list_a->amount_dp_debt); ?> </td>
+                            <td style="width:20%;"> Rp. <?php echo number_format($list_a->amount_dp); ?> </td>
 
                             <td colspan="2" style="width:2%;"> </td>
 
@@ -243,14 +289,14 @@
                         <tr>
                             <td style="width:20%;"> <b>Total Debt</b></td>
                             <td style="width:2%;"><b> : </b></td>
-                            <td style="width:20%;" colspan="6"> <b>Rp. <?php echo number_format($list_a->amount_sales - $list_a->amount_dp_debt); ?> </b></td>
+                            <td style="width:20%;" colspan="6"> <b>Rp. <?php echo number_format($list_a->amount_sales - $list_a->amount_dp); ?> </b></td>
 
                             
 
                          
                         </tr>
                         <tr>
-                            <td colspan="7"> <b><i> Terbilang : "<?php echo terbilang($list_a->amount_sales - $list_a->amount_dp_debt); ?>"</i></b></td>
+                            <td colspan="7"> <b><i> Terbilang : "<?php echo terbilang($list_a->amount_sales - $list_a->amount_dp); ?>"</i></b></td>
                            
                         </tr>
                     </table>
@@ -260,39 +306,4 @@
     </div>
     <!-- page end-->
 </section>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#myModal").modal({
-            show: false,
-            backdrop: 'static'
-        });
-        $("#cekprint").on("click", function () {
-            $("#myModal").modal('show');
-        });
-    });
-
-
-    $('.search-panel .dropdown-menu').find('a').click(function (e) {
-        e.preventDefault();
-        var param = $(this).attr("value");
-        var concept = $(this).text();
-        var oke = $('.input-group #search_param').val(param);
-        $('.search-panel span#search_concept').text(concept);
-        $('.input-group #search_param').val(param);
-        if (oke != '') {
-            $('.search').prop("disabled", false);
-            if (param == 'pubdate') {
-                $('.search').attr("id", "pubdate");
-                $('#pubdate').datepicker({format: 'yyyy-mm-dd'});
-            } else {
-                $('.search').removeAttr('id');
-            }
-        } else {
-            $('.search').prop("disabled", false);
-        }
-    });
-
-
-
-</script>
+ 

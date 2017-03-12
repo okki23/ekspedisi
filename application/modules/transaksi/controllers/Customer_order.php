@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Customer_order extends Parent_Controller {
 
-    protected $_column_order = array('id', 'customer_code', 'customer_top', 'customer_address', 'customer_phone', 'customer_name', 'sales_order_code', 'id_pic_customer', 'pic_customer_phone', 'date_order', 'date_pickup_order', 'estimation_date_arrival', 'type_service', 'payment_type', 'delivery_type', 'delivery_point', 'order_create', 'id_traffic_name', 'traffic_phone', 'special_instruction', 'sales_order_status', 'ppn', 'pph', 'ppn_val', 'pph_val', 'amount_sales', 'amount_dp', 'amount_dp_date', 'amount_dp_debt', 'customer_over_weight', 'customer_orver_price_weight', 'overnight', 'price_overnight', 'overnight_plus', 'netto_sales');
+    protected $_column_order = array('id', 'customer_code', 'customer_top', 'customer_address', 'customer_phone', 'customer_name', 'customer_order_index', 'id_pic_customer', 'pic_customer_phone', 'date_order', 'date_pickup_order', 'estimation_date_arrival', 'type_service', 'payment_type', 'delivery_type', 'delivery_point', 'order_create', 'id_traffic_name', 'traffic_phone', 'special_instruction', 'sales_order_status', 'ppn', 'pph', 'ppn_val', 'pph_val', 'amount_sales', 'amount_dp', 'amount_dp_date', 'amount_dp_debt', 'customer_over_weight', 'customer_orver_price_weight', 'overnight', 'price_overnight', 'overnight_plus', 'netto_sales');
 
     function __construct() {
         parent::__construct();
@@ -552,7 +552,8 @@ class Customer_order extends Parent_Controller {
 
         if ($id != NULL || $id != '') {
             $data['list'] = $this->customer_order_m->get_all($id);
-            $data['sales_order_code'] = $data['list']->sales_order_code;
+            //var_dump($data['list']);
+            $data['sales_order_code'] = $data['list']->customer_order_index;
             $data['order_create'] = $data['list']->order_create;
             $data['pic_customer_phone'] = '';
         } else {
@@ -654,7 +655,7 @@ class Customer_order extends Parent_Controller {
         $code = $prefix . $this->input->post('code');
         $date = date('dmy');
         $colaborate = $prefix . $code . $date;
-        $postcode = $code . date('dmy') . $this->transaksi_id();
+        $postcode = $code . date('dmy') . $this->transaksi_id_index();
         echo json_encode($postcode);
     }
 
@@ -928,7 +929,7 @@ class Customer_order extends Parent_Controller {
         } else {
             $result = $this->customer_order_m->update_so_fix($dataupt, $data['id']);
         }
-        echo $this->db->last_query();
+        //echo $this->db->last_query();
         /*
           if($data['id'] == '' || $data['id'] == NULL){
           $result = $this->customer_order_m->save_so_fix($data);
@@ -1074,6 +1075,30 @@ class Customer_order extends Parent_Controller {
 
     public function transaksi_id() {
         $data = $this->customer_order_m->get_last_no();
+        $lastid = $data->row();
+        $idnya = $lastid->id;
+
+        $param = '';
+        if ($idnya == '') { // bila data kosong
+            $ID = $param . "001";
+            //00000001
+        } else {
+            $MaksID = $idnya;
+            $MaksID++;
+
+            if ($MaksID < 10)
+                $ID = $param . "00" . $MaksID;
+            else if ($MaksID < 100)
+                $ID = $param . "0" . $MaksID;
+            else
+                $ID = $MaksID;
+        }
+
+        return $ID;
+    }
+    
+    public function transaksi_id_index() {
+        $data = $this->customer_order_m->get_last_no_index();
         $lastid = $data->row();
         $idnya = $lastid->id;
 

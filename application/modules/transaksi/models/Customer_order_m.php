@@ -22,8 +22,8 @@ class Customer_order_m extends Parent_Model {
     protected $_primary_key = 'id';
     protected $_primary_filter = 'intval';
     
-    protected $_column_order = array('id','customer_code','customer_top','customer_address','customer_phone','customer_name','sales_order_code','id_pic_customer','pic_customer_phone','date_order','date_pickup_order','estimation_date_arrival','type_service','payment_type','delivery_type','delivery_point','order_create','id_traffic_name','traffic_phone','special_instruction','customer_order_status','ppn','pph','ppn_val','pph_val','amount_sales','amount_dp','amount_dp_date','amount_dp_debt','customer_over_weight','customer_orver_price_weight','overnight','price_overnight','overnight_plus','netto_sales');
-    protected $_column_search = array('id','customer_code','customer_top','customer_address','customer_phone','customer_name','sales_order_code','id_pic_customer','pic_customer_phone','date_order','date_pickup_order','estimation_date_arrival','type_service','payment_type','delivery_type','delivery_point','order_create','id_traffic_name','traffic_phone','special_instruction','customer_order_status','ppn','pph','ppn_val','pph_val','amount_sales','amount_dp','amount_dp_date','amount_dp_debt','customer_over_weight','customer_orver_price_weight','overnight','price_overnight','overnight_plus','netto_sales');
+    protected $_column_order = array('id','customer_code','customer_top','customer_address','customer_phone','customer_name','customer_order_index','id_pic_customer','pic_customer_phone','date_order','date_pickup_order','estimation_date_arrival','type_service','payment_type','delivery_type','delivery_point','order_create','id_traffic_name','traffic_phone','special_instruction','customer_order_status','ppn','pph','ppn_val','pph_val','amount_sales','amount_dp','amount_dp_date','amount_dp_debt','customer_over_weight','customer_orver_price_weight','overnight','price_overnight','overnight_plus','netto_sales');
+    protected $_column_search = array('id','customer_code','customer_top','customer_address','customer_phone','customer_name','customer_order_index','id_pic_customer','pic_customer_phone','date_order','date_pickup_order','estimation_date_arrival','type_service','payment_type','delivery_type','delivery_point','order_create','id_traffic_name','traffic_phone','special_instruction','customer_order_status','ppn','pph','ppn_val','pph_val','amount_sales','amount_dp','amount_dp_date','amount_dp_debt','customer_over_weight','customer_orver_price_weight','overnight','price_overnight','overnight_plus','netto_sales');
     protected $_table_status = 'customer_order_status';
     protected $_order_by = array('a.id' => 'desc');
     public function array_from_post($fields) {
@@ -256,13 +256,17 @@ case when (SUM(b.price)) IS NULL then a.price else (a.price + SUM(b.price)) end 
          $this->db->where('a.cust_code',$query);
          $this->db->group_by('a.id');
          */
-        
+        /*
         $this->db->select("a.*,a.id,a.cust_code,a.sales_order_code,a.type_service,a.date_order,a.charge_option,a.sales_order_status,a.price as main_price,
 CASE when a.type_service = 'ftl' THEN (a.price + SUM(b.price))  ELSE a.price END AS hasil");
+         * 
+         */
+        $this->db->select("a.*,a.price as main_price, 
+(CASE when a.type_service = 'ftl' THEN (a.price + case when COUNT(b.price)>0 THEN SUM(b.price) else 0 END) ELSE a.price END) AS hasil");
         $this->db->from('t_so_fix a');
         $this->db->join('t_so_fix_sub b', 'b.so_primary=a.sales_order_code','left');
         $this->db->where('a.cust_code',$query);
-        $this->db->group_by('a.sales_order_code');
+        $this->db->group_by('a.id');
         //$this->db->where('cust_code',$query);
         return $this->db->get()->result();
     }
@@ -350,6 +354,11 @@ case when (SUM(b.price)) IS NULL then a.price else (a.price + SUM(b.price)) end 
     
     public function get_last_no(){
 		$query = $this->db->query("SELECT SUBSTR(MAX(sales_order_code),-3) AS id  FROM t_so_fix "); 
+		return $query;
+    }
+    
+    public function get_last_no_index(){
+		$query = $this->db->query("SELECT SUBSTR(MAX(customer_order_index),-3) AS id  FROM t_sales_order "); 
 		return $query;
     }
     public function trans_id($param='') {

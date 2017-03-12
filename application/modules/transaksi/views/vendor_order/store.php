@@ -6,10 +6,10 @@
 
             <section class="panel">
                 <header class="panel-heading">
-                     Vendor Order Form
+                    Vendor Order Form
                 </header>
                 <div class="panel-body">
-                     
+
                     <form role="form" method="post" action="<?php echo base_url('transaksi/' . $this->router->fetch_class() . '/pro_store'); ?>">
                         <!--collapse start-->
                         <div class="panel-group m-bot20" id="accordion">
@@ -30,6 +30,7 @@
                                             <div class="form-group" id="remote">
                                                 <label> Vendor Name</label>
                                                 <br>
+
                                                 <input type="hidden" name="val_pic_vendor" value="<?php echo $list->id_pic_vendor; ?>" id="val_pic_vendor">
                                                 <input type="hidden" name="key" value="<?php echo $list->payment_type; ?>" id="key">
                                                 <input type="hidden" name="date_created" value="<?php echo date('y-m-d H:i:s'); ?>" id="date_created">
@@ -100,9 +101,15 @@
                                                     ?> >Express</option>
                                                 </select>
                                             </div>
-
                                             <div class="form-group">
-                                                <label> Traffic Name</label>
+                                                <label style="color: red;" > Driver </label>
+                                                <select  name="driver_vendors" class="form-control" id="driver_vendors" > 
+                                                    <option value=""> --Pilih-- </option>
+                                                </select>
+
+                                            </div>
+                                            <div class="form-group">
+                                                <label style="color: red;" > Traffic Name</label>
                                                 <select name="id_traffic_name" class="form-control" id="id_traffic_name">
                                                     <option value="">--Pilih--</option>
                                                     <?php
@@ -118,16 +125,40 @@
 
                                             </div>
 
+                                            <div class="form-group">
+                                                <label style="color: red;"> Krani</label>
+                                                <select name="id_krani" class="form-control" id="id_krani">
+                                                    <option value="">--</option>
+                                                    <?php
+                                                    foreach ($list_krani as $listkr) {
+                                                        if ($listkr->id_position == $list->id_traffic_name) {
+                                                            echo "<option value=" . $listkr->id . " selected=selected>" . $listkr->employee_name . "</option>";
+                                                        } else {
+                                                            echo "<option value=" . $listkr->id . ">" . $listkr->employee_name . "</option>";
+                                                        }
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label style="color: red;"> No Vehicle</label>
+                                                <select name="no_vehicle" class="form-control" id="nopol_vehichle">
+                                                    <option value="">--</option>
+
+                                                </select>
+                                            </div>
+
 
                                         </div>
 
                                         <div class="col-md-6"> 
-
-
                                             <div class="form-group">
-                                                <label> Vendor Order Index </label>
-                                                <input type="text" name="vendor_order_code" id="vendor_order_index" value="<?php echo $list->vendor_order_code; ?>" class="form-control">
+                                                <label> Vendor Order Code </label>
+                                                <input type="text" name="vendor_order_index" id="vendor_order_index" class="form-control" value="<?php echo $list->vendor_order_index; ?>">
                                             </div>
+
+
                                             <div class="form-group">
                                                 <label> Vendor Address</label>
                                                 <input type="text" name="vendor_address" id="vendor_address" value="<?php echo $list->vendor_address; ?>" class="form-control">
@@ -135,7 +166,7 @@
                                             <div id="seleksi">
                                                 <div class="form-group">
                                                     <label> Vendor TOP</label>
-                                                    <input type="text" name="vendor_top" id="vendor_top" value="<?php echo $list->vendor_top; ?>" class="form-control">
+                                                    <input type="text" readonly="readonly" name="vendor_top" id="vendor_top" value="<?php echo $list->vendor_top; ?>" class="form-control">
                                                 </div>
                                             </div>
 
@@ -221,7 +252,7 @@
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                            <h4 class="modal-title">Form Add Quotation SO </h4>
+                                                            <h4 class="modal-title">Form Add Quotation PO </h4>
                                                         </div>
                                                         <div class="modal-body">
 
@@ -234,7 +265,7 @@
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label> Vendor Order Status</label>
-                                                                        <select name="sales_order_status" class="form-control" id="sales_order_status">
+                                                                        <select name="vendor_order_status" class="form-control" id="vendor_order_status">
                                                                             <option value="">--</option>
                                                                             <option value="open" >Open</option>
                                                                             <option value="close">Close</option>
@@ -330,7 +361,7 @@
                                                                             <input type="hidden" class="form-control" id="valsatuans" name="valsatuans">
                                                                         </div>
 
-                                                                        
+
                                                                     </div>
 
 
@@ -346,18 +377,63 @@
                                                                             <option value="free"> Free </option>
                                                                         </select>
                                                                     </div>
+                                                                    <div class="form-group">
+                                                                        <label> VO Status Option </label>
+                                                                        <select name="vo_status" id="vo_status" class="form-control"> 
+                                                                            <option value=""> --Pilih-- </option>
+                                                                            <option value="revenue"> Revenue </option>
+                                                                            <option value="nonrevenue"> Non Revenue </option>
+                                                                        </select>
+                                                                    </div>
 
+                                                                    <div id="omzetsel">
+                                                                        <div class="form-group">
+                                                                            <label> Customer Name  </label>
+                                                                            <select name="id_customer_names" id="id_customer_names" class="form-control"> 
+                                                                                <option value=""> --Pilih-- </option>
+                                                                                <?php
+                                                                                foreach ($list_cust as $listc) {
+                                                                                    echo "<option value=" . $listc->id . "> " . $listc->customer_name . " </option>";
+                                                                                }
+                                                                                ?>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label style="color:red;"> Sales Order No  </label>
+                                                                            <select name="id_noso" id="id_noso" class="form-control"> 
+                                                                            </select>
+                                                                        </div>
+
+                                                                        <div class="form-group">
+                                                                            <button type="button" id="get_omzet" class="btn btn-primary"> Get Omzet </button>
+                                                                        </div>
+
+                                                                        <div class="form-group">
+                                                                            <label> Omzet Value </label>
+                                                                            <input type="text" name="val_omzet" class="form-control" id="val_omzet"  >
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--
+                                                                    <div class="form-group">
+                                                                        <label> Charge Option </label>
+                                                                        <select name="charge_option" id="charge_option" class="form-control"> 
+                                                                            <option value=""> --Pilih-- </option>
+                                                                            <option value="standart"> Standart </option>
+                                                                            <option value="free"> Free </option>
+                                                                        </select>
+                                                                    </div>
+                                                                    -->
                                                                     <div class="form-group">
                                                                         <label> Address </label>
                                                                         <input type="text" name="address" class="form-control" id="address"  >
                                                                     </div>
 
                                                                     <div id="f_lead_time">
-                                                                    <div class="form-group">
-                                                                        <label> Lead Time </label>
+                                                                        <div class="form-group">
+                                                                            <label> Lead Time </label>
 
-                                                                        <input type="text" class="form-control" readonly="readonly" id="lead_time" name="lead_time" >  
-                                                                    </div>
+                                                                            <input type="text" class="form-control" readonly="readonly" id="lead_time" name="lead_time" >  
+                                                                        </div>
                                                                     </div>
 
 
@@ -573,11 +649,11 @@
                                             <thead>
                                                 <tr>
                                                     <th> No. </th>
-                                                    <th> Vendor Order Code </th>
+                                                    <th> Vendor Order Number </th>
                                                     <th> Date Order </th>
                                                     <th> Type Service </th>
                                                     <th> Charge Option </th>
-                                                    <th> SO Status </th>
+                                                    <th> VO Status </th>
                                                     <th> Opsi </th>
                                                 </tr>
                                             </thead>
@@ -731,6 +807,7 @@
                 </div>
                 <!--collapse end-->
                 <div align="center">
+                    <label> Field Inputan Dengan Label Merah Wajib Diperiksa Sebelum Melakukan Perubahan/Penginputan Data</label>
                     <br>
                     <hr>
                     <button type="submit" class="btn btn-success"> Pick Vendor Order </button>
@@ -865,13 +942,13 @@
     $('#amount_dp_date').datepicker({
         format: 'yyyy-mm-dd'
     });
-    
-    $("#district").on("change",function(){
+
+    $("#district").on("change", function () {
         var datapos = $("#district").val();
         $("#district_params").val(datapos);
         $("#district_paramsx").html(datapos);
     });
-    $("#vehicle").on("change",function(){
+    $("#vehicle").on("change", function () {
         var datapos = $("#vehicle").val();
         $("#vehicle_params").val(datapos);
         //$("#district_paramsx").html(datapos);
@@ -889,7 +966,7 @@
                 //console.log(dataku);
                 $("#province_params").val(datapos);
                 $("#province_paramsx").html(datapos);
-                
+
                 $("#island_single").val(obj.island);
                 $("#island_params").val(obj.island);
                 $("#island_paramsx").html(obj.island);
@@ -947,7 +1024,7 @@
         }
     });
 
-    $("#origin").on("change",function(){
+    $("#origin").on("change", function () {
         var or_parent = $("#origin").val();
         $("#origin_sub").val(or_parent);
         $("#origin_subx").html(or_parent);
@@ -1073,13 +1150,13 @@
         //alert(data);
         $("#myModal3").modal('show');
         $.ajax({
-            url: "<?php echo base_url('transaksi/vendor_order/get_detail_so_fix/') ?>" + data,
+            url: "<?php echo base_url('transaksi/vendor_order/get_detail_po_fix/') ?>" + data,
             type: "GET",
             success: function (konten) {
                 //console.log(konten);
                 var obj = JSON.parse(konten);
                 //console.log(obj.sales_order_status);
-                $("#nomorso_detail").html(obj.sales_order_status);
+                $("#nomorso_detail").html(obj.vendor_order_code);
                 $("#origin_detail").html(obj.origin);
                 $("#vehicle_detail").html(obj.vehicle);
                 $("#cubication_detail").html(obj.cubication);
@@ -1182,20 +1259,41 @@
 
         $("#myModal2").modal('show');
     }
+    function get_list_idnoso(idcustname){
+        console.log('called');
+        
+         $.ajax({
+                url: "<?php echo base_url('transaksi/vendor_order/get_trans_po_number'); ?>",
+                data: {isi: idcustname},
+                type: "POST",
+                success: function (getdata) {
+                    $("#id_noso").html(getdata);
+                    //console.log(getdata);
+                }
+            });
+        
+    }
     function get_edit_so_fix(query) {
         $('#myModal').modal('show');
         var custcode = $("#vendor_code").val();
         var soprimary = $("#vendor_order_code").val();
         console.log(soprimary);
         $.ajax({
-            url: "<?php echo base_url('transaksi/vendor_order/get_edit_so_fix/'); ?>" + query,
+            url: "<?php echo base_url('transaksi/vendor_order/get_edit_po_fix/'); ?>" + query,
             type: "GET",
             success: function (list) {
                 var obj = JSON.parse(list);
+                var vo_status = $("#vo_status").val();
+                get_list_idnoso(obj.id_customer_names);
                 $("#idsofix").val(obj.id);
                 $("#origin").val(obj.origin);
+                $("#vo_status").val(obj.vo_status);
+                $("#id_customer_names").val(obj.id_customer_names);
+                //$("#id_noso").val(obj.id_noso);
+                $("#val_omzet").val(obj.val_omzet);
+                $("#tot_satuan").val(obj.tot_satuan);
                 $("#vendor_order_code").val(obj.vendor_order_code);
-                $("#sales_order_status").val(obj.sales_order_status);
+                $("#vendor_order_status").val(obj.vendor_order_status);
                 $("#date_order").val(obj.date_order);
                 $("#province").val(obj.province);
                 $("#island_single").val(obj.island_single);
@@ -1203,7 +1301,12 @@
                 $("#vehicle").val(obj.vehicle);
                 $("#type_service").val(obj.type_service);
                 $("#ists").val(obj.type_service);
- 
+                
+                if(obj.vo_status == 'revenue'){
+                    $("#omzetsel").show();
+                }else{
+                    $("#omzetsel").hide();
+                }
                 if (district != '' && origin == '') {
                     var konten = '';
                 } else if (district == '' && origin != '') {
@@ -1218,7 +1321,7 @@
                     }
                 }
                 $("#district_info").val(konten);
-            
+
                 $("#ists").val(obj.type_service);
                 $("#sc").val(obj.sc);
                 $("#moda").val(obj.moda);
@@ -1231,16 +1334,16 @@
                 $("#lead_time").val(obj.lead_time);
                 $("#price").val(obj.price);
                 $("#origin_sub").val(obj.origin);
-            $("#province_params").val(obj.province);
-                 $("#district_params").val(obj.district);
-            $("#island_params").val(obj.island_single);
-            $("#vehicle_params").val(obj.vehicle);
-            
-            $("#origin_subx").html(obj.origin);
-            $("#province_paramsx").html(obj.province);
-            $("#district_paramsx").html(obj.district);
-            $("#island_paramsx").html(obj.island_single);
-            $("#vehicle_paramsx").html(obj.vehicle);
+                $("#province_params").val(obj.province);
+                $("#district_params").val(obj.district);
+                $("#island_params").val(obj.island_single);
+                $("#vehicle_params").val(obj.vehicle);
+
+                $("#origin_subx").html(obj.origin);
+                $("#province_paramsx").html(obj.province);
+                $("#district_paramsx").html(obj.district);
+                $("#island_paramsx").html(obj.island_single);
+                $("#vehicle_paramsx").html(obj.vehicle);
                 console.log(list);
                 get_origin_sub(custcode);
                 get_vehicle_sub(custcode);
@@ -1253,37 +1356,37 @@
                     $("#list_ftl").show();
                     $("#list_ltl").hide();
                     $("#f_lead_time").show();
-                    
-                     $.get("<?php echo base_url('transaksi/vendor_order/get_params_multidp/'); ?>" + obj.vendor_order_code, function (resp) {
-            var row = JSON.parse(resp);
-            //get_list_po_fix_multi(row.id);
-            $("#soparent").val(row.id);
-            $("#origin_sub").val(row.origin);
-            $("#province_params").val(row.province);
 
-            //type_service
-            $("#district_params").val(row.district);
-            $("#island_params").val(row.island_single);
-            $("#vehicle_params").val(row.vehicle);
-            $("#origin_subx").html(row.origin);
-            $("#province_paramsx").html(row.province);
-            $("#district_paramsx").html(row.district);
-            $("#island_paramsx").html(row.island_single);
-            $("#vehicle_paramsx").html(row.vehicle);
-            $("#satuan_params").html('');
-            $("#moda_params").html('');
-            console.log(resp);
-        });
-        
+                    $.get("<?php echo base_url('transaksi/vendor_order/get_params_multidp/'); ?>" + obj.vendor_order_code, function (resp) {
+                        var row = JSON.parse(resp);
+                        //get_list_po_fix_multi(row.id);
+                        $("#soparent").val(row.id);
+                        $("#origin_sub").val(row.origin);
+                        $("#province_params").val(row.province);
+
+                        //type_service
+                        $("#district_params").val(row.district);
+                        $("#island_params").val(row.island_single);
+                        $("#vehicle_params").val(row.vehicle);
+                        $("#origin_subx").html(row.origin);
+                        $("#province_paramsx").html(row.province);
+                        $("#district_paramsx").html(row.district);
+                        $("#island_paramsx").html(row.island_single);
+                        $("#vehicle_paramsx").html(row.vehicle);
+                        $("#satuan_params").html('');
+                        $("#moda_params").html('');
+                        console.log(resp);
+                    });
+
                     get_list_po_fix_multi(obj.vendor_order_code);
                     $("#lmd").show();
-                    
+
                 } else if (tsrv == '') {
                     $("#list_ftl").hide();
                     $("#list_ltl").hide();
                     $("#lmd").hide();
                     $("#f_lead_time").hide();
-                    
+
                 } else if (tsrv == 'ltl') {
                     $("#list_ftl").hide();
                     $("#list_ltl").show();
@@ -1298,7 +1401,7 @@
     function get_delete_so_fix(query) {
         var custcode = $("#vendor_code").val();
         $.ajax({
-            url: "<?php echo base_url('transaksi/vendor_order/get_delete_so_fix/'); ?>",
+            url: "<?php echo base_url('transaksi/vendor_order/get_delete_po_fix/'); ?>",
             type: "POST",
             data: {query: query},
             success: function (list) {
@@ -1326,7 +1429,7 @@
 
     function get_delete_so_fix_multi(query) {
         var custcode = $("#vendor_code").val();
-         var soprimary = $("#vendor_order_code").val();
+        var soprimary = $("#vendor_order_code").val();
         $.ajax({
             url: "<?php echo base_url('transaksi/vendor_order/get_delete_so_fix_multi/'); ?>" + query,
             type: "GET",
@@ -1465,7 +1568,7 @@
                 items.push("<td>" + val.date_order + "</td>");
                 items.push("<td>" + val.type_service + "</td>");
                 items.push("<td>" + val.charge_option + "</td>");
-                items.push("<td>" + val.sales_order_status + "</td>");
+                items.push("<td>" + val.vendor_order_status + "</td>");
                 if (devpoint == 'single_drop') {
                     items.push("<td> <a href='javascript:void(0)' onclick='get_edit_so_fix(" + val.id + ");'> Edit </a> &nbsp; | &nbsp; \n\
                                     <a href='javascript:void(0)' onclick='get_detail_so_fix(" + val.id + ");'> Detail </a> &nbsp; | &nbsp; \n\
@@ -1491,8 +1594,7 @@
 
 
     $(document).ready(function () {
-        
-        
+        $("#omzetsel").hide();
         $("#f_lead_time").hide();
         $("#list_ftl").hide();
         var ists = $("#ists").val();
@@ -1504,20 +1606,80 @@
         } else {
             $("#lmd").hide();
         }
+
+        $("#vo_status").on("change", function () {
+            var vo_status = $("#vo_status").val();
+
+            if (vo_status == 'revenue') {
+                $("#omzetsel").show();
+            } else if (vo_status == 'nonrevenue') {
+                $("#omzetsel").hide();
+            } else {
+                $("#omzetsel").hide();
+            }
+        });
+
+
         var custcode = $("#vendor_code").val();
+        get_nopol_vehichle(custcode);
+        get_driver_vendors(custcode);
         $("#list_ltl").hide();
         $("#news").on("click", function () {
+            $('#myModal').modal('hide');
+            $("#savemodal").hide();
+            $("#idsofix").val('');
+            $("#service_mode").val('');
+            $("#origin").val('');
+            $("#vo_status").val('');
+            $("#id_customer_names").val('');
+            $("#id_noso").val('');
+            $("#val_omzet").val('');
+            $("#vendor_order_status").val('');
+            $("#vendor_order_code").val('');
+            $("#date_order").val('');
+            $("#province").val('');
+            $("#island_single").val('');
+            $("#district").val('');
+            $("#vehicle").val('');
+            $("#type_service").val('');
+            $("#sc").val('');
+            $("#moda").val('');
+            $("#district_info").val('');
+            $("#cubication").val('');
+            $("#tonase").val('');
+            $("#charge_option").val('');
+            $("#address").val('');
+            $("#resleadtime").html('');
+            $("#lead_time").val('');
+            $("#price").val('');
+            $("#list_ftl").hide();
+            $("#list_ltl").hide();
+            $("#lmd").hide();
+            $("#savemodal_sub").hide();
+            $("#idsosub").val('');
+            $("#soparent").val('');
+            $("#origin_sub").val('');
+            $("#province_sub").val('');
+            $("#district_sub").val('');
+            $("#vehicle_sub").val('');
+            $("#district_info_sub").val('');
+            $("#cubication_sub").val('');
+            $("#tonase_sub").val('');
+            $("#charge_option_sub").val('');
+            $("#address_sub").val('');
+            $("#lead_time_sub").val('');
+            $("#price_sub").val('');
             $('#myModal').modal('show');
             /*
-            $.get("<?php echo base_url('transaksi/vendor_order/get_last_id_post');?>",function(lastid){
-                console.log(lastid);
-                $("#idsofix").val(lastid);
-            });
-            var custcode = $("#vendor_code").val();
-            */
+             $.get("<?php echo base_url('transaksi/vendor_order/get_last_id_post'); ?>",function(lastid){
+             console.log(lastid);
+             $("#idsofix").val(lastid);
+             });
+             var custcode = $("#vendor_code").val();
+             */
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url('transaksi/vendor_order/get_so_code'); ?>",
+                url: "<?php echo base_url('transaksi/vendor_order/get_po_code_num'); ?>",
                 dataType: "json",
                 data: {code: custcode},
                 success: function (result) {
@@ -1605,11 +1767,11 @@
                         //console.log(val);
                         items.push("<tr>");
                         items.push("<td>" + no + "</td>");
-                        items.push("<td>" + val.sales_order_status + "</td>");
+                        items.push("<td>" + val.vendor_order_code + "</td>");
                         items.push("<td>" + val.date_order + "</td>");
                         items.push("<td>" + val.type_service + "</td>");
                         items.push("<td>" + val.charge_option + "</td>");
-                        items.push("<td>" + val.sales_order_status + "</td>");
+                        items.push("<td>" + val.vo_status + "</td>");
                         items.push("<td><a href='javascript:void(0)' onclick='get_edit_so_fix(" + val.id + ");'> Edit </a> &nbsp; | &nbsp; \n\
                                         <a href='javascript:void(0)' onclick='get_detail_so_fix(" + val.id + ");'> Detail </a> &nbsp; | &nbsp; \n\
                                         <a href='javascript:void(0)' onclick='get_delete_so_fix(" + val.id + ");'> Delete </a> </td>");
@@ -1634,11 +1796,11 @@
                         //console.log(val);
                         items.push("<tr>");
                         items.push("<td>" + no + "</td>");
-                        items.push("<td>" + val.sales_order_status + "</td>");
+                        items.push("<td>" + val.vendor_order_code + "</td>");
                         items.push("<td>" + val.date_order + "</td>");
                         items.push("<td>" + val.type_service + "</td>");
                         items.push("<td>" + val.charge_option + "</td>");
-                        items.push("<td>" + val.sales_order_status + "</td>");
+                        items.push("<td>" + val.vo_status + "</td>");
 
                         items.push("<td><a href='javascript:void(0)' onclick='get_edit_so_fix(" + val.id + ");'> Edit </a> &nbsp; | &nbsp; \n\
                                         <a href='javascript:void(0)' onclick='get_detail_so_fix(" + val.id + ");'> Detail </a> &nbsp; | &nbsp; \n\
@@ -1664,11 +1826,11 @@
                         //console.log(val);
                         items.push("<tr>");
                         items.push("<td>" + no + "</td>");
-                        items.push("<td>" + val.sales_order_status + "</td>");
+                        items.push("<td>" + val.vendor_order_code + "</td>");
                         items.push("<td>" + val.date_order + "</td>");
                         items.push("<td>" + val.type_service + "</td>");
                         items.push("<td>" + val.charge_option + "</td>");
-                        items.push("<td>" + val.sales_order_status + "</td>");
+                        items.push("<td>" + val.vo_status + "</td>");
 
                         items.push("<td><a href='javascript:void(0)' id='get_multidrop' onclick='get_multidrop(" + val.id + ");'> Multidrop </a> &nbsp; | &nbsp; \n\
                                         <a href='javascript:void(0)' onclick='get_detail_so_fix(" + val.id + ");'> Detail </a> &nbsp; | &nbsp; \n\
@@ -1699,9 +1861,14 @@
             $('#myModal').modal('hide');
             $("#savemodal").hide();
             $("#idsofix").val('');
+            $("#service_mode").val('');
             $("#origin").val('');
-            $("#sales_order_status").val('');
-            $("#sales_order_status").val('');
+            $("#vo_status").val('');
+            $("#id_customer_names").val('');
+            $("#id_noso").val('');
+            $("#val_omzet").val('');
+            $("#vendor_order_status").val('');
+            $("#vendor_order_code").val('');
             $("#date_order").val('');
             $("#province").val('');
             $("#island_single").val('');
@@ -1733,45 +1900,75 @@
             $("#tonase_sub").val('');
             $("#charge_option_sub").val('');
             $("#address_sub").val('');
-
             $("#lead_time_sub").val('');
             $("#price_sub").val('');
         });
-        $("#sc").on("change",function(){
+        $("#sc").on("change", function () {
             /*
-           var kons = $("#sc").val();
-           var island_single = $("#island_single").val();
-           var origin = $("#origin").val();
-           var district = $("#district").val();
-           var province = $("#province").val();
-           var service_mode = $("#service_mode").val();
-           var moda = $("#moda").val();
-           $.ajax({
-                    url:"<?php echo base_url('transaksi/vendor_order/get_val_ltl');?>",
-                    data:{uom: kons,
-                          island:island_single,
-                          origin: origin,
-                          category_destination:district,
-                          province:province,
-                          service_mode:service_mode,
-                          trip_mode:moda
-                         },
-                    type:"POST",
-                    success:function(rest){
-                        var obj = JSON.parse(rest);
-                        $("#valsatuans").val(obj.price);
-                        console.log(rest);
-                    }
-                });
-            */
+             var kons = $("#sc").val();
+             var island_single = $("#island_single").val();
+             var origin = $("#origin").val();
+             var district = $("#district").val();
+             var province = $("#province").val();
+             var service_mode = $("#service_mode").val();
+             var moda = $("#moda").val();
+             $.ajax({
+             url:"<?php echo base_url('transaksi/vendor_order/get_val_ltl'); ?>",
+             data:{uom: kons,
+             island:island_single,
+             origin: origin,
+             category_destination:district,
+             province:province,
+             service_mode:service_mode,
+             trip_mode:moda
+             },
+             type:"POST",
+             success:function(rest){
+             var obj = JSON.parse(rest);
+             $("#valsatuans").val(obj.price);
+             console.log(rest);
+             }
+             });
+             */
         });
-           
-         
+
+        $("#id_customer_names").on("change", function () {
+            var isi = $(this).val();
+            console.log(isi);
+            $.ajax({
+                url: "<?php echo base_url('transaksi/vendor_order/get_trans_po_number'); ?>",
+                data: {isi: isi},
+                type: "POST",
+                success: function (getdata) {
+                    $("#id_noso").html(getdata);
+                    //console.log(getdata);
+                }
+            });
+        });
+
+        $("#get_omzet").on("click", function () {
+            var id_noso = $("#id_noso").val();
+            $.ajax({
+                url: "<?php echo base_url('transaksi/vendor_order/get_omzet'); ?>",
+                data: {id_noso: id_noso},
+                type: "POST",
+                success: function (val) {
+                    console.log(val);
+                    var doms = JSON.parse(val);
+                    $("#val_omzet").val(doms.price);
+                }
+            });
+
+        });
         $("#savemodal").on("click", function () {
             var idsofix = $("#idsofix").val();
+            var id_customer_names = $("#id_customer_names").val();
+            var id_noso = $("#id_noso").val();
             var origin = $("#origin").val();
+            var val_omzet = $("#val_omzet").val();
+            var vo_status = $("#vo_status").val();
             var vendor_order_code = $("#vendor_order_code").val();
-            var sales_order_status = $("#sales_order_status").val();
+            var vendor_order_status = $("#vendor_order_status").val();
             var date_order = $("#date_order").val();
             var province = $("#province").val();
             var district = $("#district").val();
@@ -1789,22 +1986,27 @@
             var address = $("#address").val();
             var lead_time = $("#lead_time").val();
             var price = $("#price").val();
-            var custcode = $("#vendor_code").val();
-            if(type_service == 'ftl'){
+            var ven_code = $("#vendor_code").val();
+            if (type_service == 'ftl') {
                 console.log('FTL adalah single_drop');
-            }else{
+            } else {
                 console.log('LTL atau kosong adalah single_drop');
             }
-            
+
             $.ajax({
-                url: "<?php echo base_url('transaksi/vendor_order/save_qc_of_so'); ?>",
+                url: "<?php echo base_url('transaksi/vendor_order/save_qc_of_po'); ?>",
                 type: "POST",
                 data: {idsofix: idsofix,
                     origin: origin,
                     province: province,
                     island_single: island_single,
+                    vo_status: vo_status,
+                    val_omzet:val_omzet,
                     vendor_order_code: vendor_order_code,
-                    sales_order_status: sales_order_status,
+                    vendor_order_status: vendor_order_status,
+                    id_customer_names: id_customer_names,
+                    id_noso: id_noso,
+                
                     date_order: date_order,
                     district: district,
                     vehicle: vehicle,
@@ -1820,39 +2022,83 @@
                     address: address,
                     lead_time: lead_time,
                     price: price,
-                    cust_code: custcode
+                    ven_code: ven_code
                 },
                 success: function (data) {
                     console.log(data);
                     get_list_po_fix(custcode);
                     $('#myModal').modal('hide');
-                    $("#idsofix").val('');
+                    //$("#idsofix").val('');
+                    //$('#myModal').modal('hide');
+            $("#savemodal").hide();
+            $("#idsofix").val('');
+            $("#service_mode").val('');
+            $("#origin").val('');
+            $("#vo_status").val('');
+            $("#id_customer_names").val('');
+            $("#id_noso").val('');
+            $("#val_omzet").val('');
+            $("#vendor_order_status").val('');
+            $("#vendor_order_code").val('');
+            $("#date_order").val('');
+            $("#province").val('');
+            $("#island_single").val('');
+            $("#district").val('');
+            $("#vehicle").val('');
+            $("#type_service").val('');
+            $("#sc").val('');
+            $("#moda").val('');
+            $("#district_info").val('');
+            $("#cubication").val('');
+            $("#tonase").val('');
+            $("#charge_option").val('');
+            $("#address").val('');
+            $("#resleadtime").html('');
+            $("#lead_time").val('');
+            $("#price").val('');
+            $("#list_ftl").hide();
+            $("#list_ltl").hide();
+            $("#lmd").hide();
+            $("#savemodal_sub").hide();
+            $("#idsosub").val('');
+            $("#soparent").val('');
+            $("#origin_sub").val('');
+            $("#province_sub").val('');
+            $("#district_sub").val('');
+            $("#vehicle_sub").val('');
+            $("#district_info_sub").val('');
+            $("#cubication_sub").val('');
+            $("#tonase_sub").val('');
+            $("#charge_option_sub").val('');
+            $("#address_sub").val('');
+            $("#lead_time_sub").val('');
+            $("#price_sub").val('');
                     /*
-                    $("#origin").val('');
-                    $("#vendor_order_code").val('');
+                     $("#origin").val('');
+                     $("#vendor_order_code").val('');
                      $("#service_mode").val('');
-                    $("#sales_order_status").val('');
-                    $("#date_order").val('');
-                    $("#province").val('');
-                    $("#island_single").val('');
-                    $("#district").val('');
-                    $("#vehicle").val('');
-                    $("#type_service").val('');
-                    $("#sc").val('');
-                    $("#moda").val('');
-                    $("#district_info").val('');
-                    $("#cubication").val('');
-                    $("#tonase").val('');
-                    $("#charge_option").val('');
-                    $("#address").val('');
-                    $("#resleadtime").html('');
-                    $("#lead_time").val('');
-                    $("#price").val('');
-                    */
+                     $("#sales_order_status").val('');
+                     $("#date_order").val('');
+                     $("#province").val('');
+                     $("#island_single").val('');
+                     $("#district").val('');
+                     $("#vehicle").val('');
+                     $("#type_service").val('');
+                     $("#sc").val('');
+                     $("#moda").val('');
+                     $("#district_info").val('');
+                     $("#cubication").val('');
+                     $("#tonase").val('');
+                     $("#charge_option").val('');
+                     $("#address").val('');
+                     $("#resleadtime").html('');
+                     $("#lead_time").val('');
+                     $("#price").val('');
+                     */
                 }
 
             });
-         
+
         });
 
         $("#savemodal_sub").on("click", function () {
@@ -1883,7 +2129,7 @@
 
 
             $.ajax({
-                url: "<?php echo base_url('transaksi/vendor_order/save_qc_of_so_multi'); ?>",
+                url: "<?php echo base_url('transaksi/vendor_order/save_qc_of_po_multi'); ?>",
                 type: "POST",
                 data: {idsosub: idsosub,
                     soparent: soparent,
@@ -2068,7 +2314,31 @@
                 $("#seleksi").show();
             }
         });
+        function get_nopol_vehichle_sub(vencode) {
 
+            $.ajax({
+                url: "<?php echo base_url('transaksi/vendor_order/get_nopol_vehichle/'); ?>" + vencode + "",
+
+                success: function (response) {
+                    //console.log(response);
+                    $("#nopol_vehichle_sub").html(response);
+                },
+                dataType: "html"
+            });
+        }
+
+        function get_nopol_vehichle(vencode) {
+
+            $.ajax({
+                url: "<?php echo base_url('transaksi/vendor_order/get_nopol_vehichle/'); ?>" + vencode + "",
+
+                success: function (response) {
+                    //console.log(response);
+                    $("#nopol_vehichle").html(response);
+                },
+                dataType: "html"
+            });
+        }
 
         //ambil data ke server 
         var getdata = new Bloodhound({
@@ -2087,26 +2357,43 @@
         });
 
         $('#remote .typeahead').bind('typeahead:selected', function (obj, datum, name) {
-
+            console.log(datum);
             var code = $('#vendor_code').val(datum.noso);
-            get_list_po_fix(datum.vendor_code);
             $('#vendor_name').val(datum.vendor_name);
             $('#vendor_code').val(datum.vendor_code);
+            console.log(datum.vendor_code);
             $('#vendor_address').val(datum.vendor_address);
             $('#vendor_top').val(datum.top);
+
             $('#vendor_phone').val(datum.vendor_phone);
+            get_list_po_fix(datum.vendor_code);
+            get_nopol_vehichle(datum.vendor_code)
+            get_driver_vendors(datum.vendor_code);
+            get_origin(datum.vendor_code);
+            get_vehicle(datum.vendor_code);
+            get_province(datum.vendor_code);
+            get_district(datum.vendor_code);
+
+
+            get_origin_sub(datum.vendor_code);
+            get_vehicle_sub(datum.vendor_code);
+            get_province_sub(datum.vendor_code);
+            get_district_sub(datum.vendor_code);
+            get_nopol_vehichle_sub(datum.vendor_code)
+            get_driver_vendors_sub(datum.vendor_code);
             //get so code
             $.ajax({
-                    type: "POST",
-                    url: "<?php echo base_url('transaksi/vendor_order/get_coi_code'); ?>",
-                    dataType: "json",
-                    data: {code: datum.vendor_code},
-                    success: function (result) {
-                        console.log(result);
+                type: "POST",
+                url: "<?php echo base_url('transaksi/vendor_order/get_po_code'); ?>",
+                dataType: "json",
+                data: {code: datum.vendor_code},
+                success: function (result) {
+                    console.log(result);
                     $('#vendor_order_index').val(result);
-                    },
-                    async: false
-                   });
+                },
+                async: false
+
+            });
             //get so code
             //get pic 
             $.ajax({
@@ -2126,6 +2413,46 @@
             //$('#vendor_id').val(datum.id);
 
         });
+
+        function get_nopol_vehichle_sub(vencode) {
+
+            $.ajax({
+                url: "<?php echo base_url('transaksi/vendor_order/get_nopol_vehichle/'); ?>" + vencode + "",
+
+                success: function (response) {
+                    //console.log(response);
+                    $("#nopol_vehichle_sub").html(response);
+                },
+                dataType: "html"
+            });
+        }
+
+        function get_driver_vendors(vencode) {
+
+            $.ajax({
+                url: "<?php echo base_url('transaksi/vendor_order/get_driver_vendors/'); ?>" + vencode + "",
+
+                success: function (response) {
+                    //console.log(response);
+                    $("#driver_vendors").html(response);
+                },
+                dataType: "html"
+            });
+        }
+
+        function get_nopol_vehichle(vencode) {
+
+            $.ajax({
+                url: "<?php echo base_url('transaksi/vendor_order/get_nopol_vehichle/'); ?>" + vencode + "",
+
+                success: function (response) {
+                    //console.log(response);
+                    $("#nopol_vehichle").html(response);
+                },
+                dataType: "html"
+            });
+        }
+
 
         function get_list_po_fix(codecust) {
 
@@ -2239,6 +2566,19 @@
             //console.log(konten);
         });
 
+        function get_driver_vendors_sub(vencode) {
+
+            $.ajax({
+                url: "<?php echo base_url('transaksi/vendor_order/get_driver_vendors/'); ?>" + vencode + "",
+
+                success: function (response) {
+                    //console.log(response);
+                    $("#driver_vendors_sub").html(response);
+                },
+                dataType: "html"
+            });
+        }
+
         $("#origin").on("change", function () {
             var district = $("#district").val();
             var origin = $(this).val();
@@ -2269,6 +2609,7 @@
 
         $("#calculate").on("click", function () {
             var origin = $("#origin").val();
+            var vo_status = $("#vo_status").val();
             var custcode = $("#vendor_code").val();
             var district = $("#district").val();
             var vehicle = $("#vehicle").val();
@@ -2278,80 +2619,81 @@
             var trip_mode = $("#trip_mode").val();
             var tot_satuan = $("#tot_satuan").val();
             var charge_option = $("#charge_option").val();
-            var type_service = $("#type_service").val();            
+            var type_service = $("#type_service").val();
             var kons = $("#sc").val();
             var island_single = $("#island_single").val();
             var province = $("#province").val();
             var moda = $("#moda").val();
-            
-            if(type_service == 'ftl'){
-                
-                    console.log('ftl multi');
-                    
-                    if (charge_option == 'free') {
+
+            if (type_service == 'ftl') {
+
+                console.log('ftl multi');
+
+                if (charge_option == 'free') {
                     $("#price").val(0);
                     $("#lead_time").val(0 + ' Days');
-                    } else {
-                        $.ajax({
-                            url: "<?php echo base_url('transaksi/vendor_order/calculating_qso_ftl'); ?>",
-                            type: "POST",
-                            data: {custcode:custcode,origin: origin, district: district, vehicle: vehicle,service_mode:service_mode},
-                            success: function (data) {
-                                var obj = JSON.parse(data);
-                                $("#resleadtime").html(obj.lead_time);
-                                $("#lead_time").val(obj.lead_time);
-                                $("#price").val(obj.price);
-                                console.log(data);
-                            }
-                        })
-                    }
-                    
-            }else if(type_service == 'ltl'){
-            
-                    console.log('ltl single');
-                     
+                } else {
                     $.ajax({
-                             url:"<?php echo base_url('transaksi/vendor_order/get_call_ltl');?>",
-                             data:{ 
-                                   custcode:custcode,
-                                   island:island_single,
-                                   origin: origin,
-                                   tot_satuan:tot_satuan,
-                                   category_destination:district,
-                                   province:province,
-                                   service_mode:service_mode,
-                                   trip_mode:moda,
-                                   uom:sc
-                                  },
-                             type:"POST",
-                             success:function(rest){
-                                 //var obj = JSON.parse(rest);
-                                 $("#price").val(rest)
-                                 console.log(rest);
-                             }
-                         });
-                
-                /*
-                    var rests = parseInt(valsatuans) * parseInt(tot_satuan);
-                    if (charge_option == 'free') {
-                        $("#price").val(0);
-                        $("#lead_time").val(0 + ' Days');
-                        } else {
-                            $("#price").val(rests);
+                        url: "<?php echo base_url('transaksi/vendor_order/calculating_qso_ftl'); ?>",
+                        type: "POST",
+                        data: {custcode: custcode, origin: origin, district: district, vehicle: vehicle, service_mode: service_mode},
+                        success: function (data) {
+                            var obj = JSON.parse(data);
+                            $("#resleadtime").html(obj.lead_time);
+                            $("#lead_time").val(obj.lead_time);
+                            $("#price").val(obj.price);
+                            console.log(data);
                         }
-                  */      
-            }else{
-            
-                    console.log('blank single');
-                    
-                    if (charge_option == 'free') {
-                            $("#price").val(0);
-                            $("#lead_time").val(0 + ' Days');
-                            } else {
-                                 $("#price").val(0);
-                           }
+                    })
+                }
+
+            } else if (type_service == 'ltl') {
+
+                console.log('ltl single');
+
+                $.ajax({
+                    url: "<?php echo base_url('transaksi/vendor_order/get_call_ltl'); ?>",
+                    data: {
+                        custcode: custcode,
+                        island: island_single,
+                        origin: origin,
+                        tot_satuan: tot_satuan,
+                        category_destination: district,
+                        province: province,
+                        service_mode: service_mode,
+                        trip_mode: moda,
+                        uom: sc
+                    },
+                    type: "POST",
+                    success: function (rest) {
+                        //var obj = JSON.parse(rest);
+                        var data = parseFloat(rest);
+                        $("#price").val(data);
+                        console.log(data);
+                    }
+                });
+
+                /*
+                 var rests = parseInt(valsatuans) * parseInt(tot_satuan);
+                 if (charge_option == 'free') {
+                 $("#price").val(0);
+                 $("#lead_time").val(0 + ' Days');
+                 } else {
+                 $("#price").val(rests);
+                 }
+                 */
+            } else {
+
+                console.log('blank single');
+
+                if (charge_option == 'free') {
+                    $("#price").val(0);
+                    $("#lead_time").val(0 + ' Days');
+                } else {
+                    $("#price").val(0);
+                }
             }
-           
+
             $("#savemodal").show();
         });
 

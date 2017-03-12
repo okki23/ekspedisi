@@ -20,7 +20,7 @@
                     </table>
                     <br>
                     
-                    <h5 align="center"> No.CO : <?php echo $list_a->sales_order_code; ?>  </h5>
+                    <h5 align="center"> No.CO : <?php echo $list_a->customer_order_index; ?>  </h5>
                      
                     <br>
                     <table class="table" border="0">
@@ -133,9 +133,17 @@
                             $row_price = 0;
                             $child_price = 0;
                             foreach ($list_b as $row) {
-
+                                /*
                                 $ceksochild = $this->customer_order_m->cek_child_so($row->sales_order_code);
                                 $list_child = $this->customer_order_m->list_child_so($row->sales_order_code);
+                                 */
+                                if($row->type_service == 'ftl'){
+                                    $ceksochild = $this->customer_order_m->cek_child_so($row->sales_order_code);
+                                    $list_child = $this->customer_order_m->list_child_so($row->sales_order_code);
+                                }else{
+                                     $ceksochild = 0;
+                                }
+                                
                                 //var_dump($list_child);
 
                                 echo "<tr>";
@@ -147,7 +155,12 @@
                                 echo "<td>" . $row->origin . "</td>";
                                 echo "<td>" . $row->province . "</td>";
                                 echo "<td>" . $row->district . "</td>";
-                                echo "<td style='text_align:right;'> Rp. " . number_format($row->price) . "</td>";
+                                if($row->price != '' || $row->price != NULL){
+                                    echo "<td style='text_align:right;'> Rp. " . number_format($row->price) . "</td>";
+                                }else{
+                                    echo "<td style='text_align:right;'> Rp.  0</td>";
+                                }
+                                
                                 echo "</tr>";
 
                                 if ($ceksochild > 0) {
@@ -218,7 +231,17 @@
 
                             <td style="width:20%;"> PPN </td>
                             <td style="width:2%;"> : </td>
+                            <?php
+                            if($list_a->ppn_val != '' || $list_a->ppn_val != NULL){
+                            ?>
                             <td style="width:20%;"> <?php echo "Rp. ". number_format($list_a->ppn_val); ?>  (<?php echo $list_a->ppn; ?>%)   </td>
+                            <?php
+                            }else{
+                            ?>
+                            <td style="width:20%;"> <?php echo "Rp. 0 (0%)  "; ?></td>
+                            <?php
+                            }
+                            ?>                            
                         </tr>
                         <tr>
                             <td style="width:20%;">DP Date</td>
@@ -229,12 +252,27 @@
 
                             <td style="width:20%;"> PPH </td>
                             <td style="width:2%;"> : </td>
+                            <?php
+                            if($list_a->pph_val != '' || $list_a->pph_val != NULL){                          
+                            ?>
+                            
                             <td style="width:20%;"> <?php echo "Rp. ". number_format($list_a->pph_val); ?>  (<?php echo $list_a->pph; ?>%)   </td>
+                            
+                            <?php 
+                            }else{
+                            ?>
+                            
+                            <td style="width:20%;"> <?php echo "Rp. 0 (0%)"; ?></td>
+                            
+                            <?php
+                            }
+                            ?>
+                            
                         </tr>
                         <tr>
                             <td style="width:20%;">DP Payment</td>
                             <td style="width:2%;"> : </td>
-                            <td style="width:20%;"> Rp. <?php echo number_format($list_a->amount_dp_debt); ?> </td>
+                            <td style="width:20%;"> Rp. <?php echo number_format($list_a->amount_dp); ?> </td>
 
                             <td colspan="2" style="width:2%;"> </td>
 
@@ -245,14 +283,14 @@
                         <tr>
                             <td style="width:20%;"> <b>Total Debt</b></td>
                             <td style="width:2%;"><b> : </b></td>
-                            <td style="width:20%;" colspan="6"> <b>Rp. <?php echo number_format($list_a->amount_sales - $list_a->amount_dp_debt); ?> </b></td>
+                            <td style="width:20%;" colspan="6"> <b>Rp. <?php echo number_format($list_a->amount_sales - $list_a->amount_dp); ?> </b></td>
 
                             
 
                          
                         </tr>
                         <tr>
-                            <td colspan="7"> <b><i> Terbilang : "<?php echo terbilang($list_a->amount_sales - $list_a->amount_dp_debt); ?>"</i></b></td>
+                            <td colspan="7"> <b><i> Terbilang : "<?php echo terbilang($list_a->amount_sales - $list_a->amount_dp); ?>"</i></b></td>
                            
                         </tr>
                     </table>

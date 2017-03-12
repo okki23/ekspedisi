@@ -65,19 +65,21 @@
 
 <script type="text/javascript">
     var vendor_code = $("#vendor_code").val();
-    var base_url = "<?php echo base_url();?>";
-
     $(document).ready(function () {
         //semua yang ada disini akan di jalankan pertama kali ketika halaman di load
 
+
+        //console.log(vendor_code);
         //load isi tabel pic pertama kali saat vendor code sudah terisi
         if ($("#tbl-vendor-pic").hasClass("sapTable")) {
-            $("#tbl-vendor-pic").sapTable_refresh();
-             
+            $("#tbl-vendor-pic").refresh_sapTable({
+                url: "<?php echo base_url('master/vendor/pic_vendor_json/'); ?>" + vendor_code
+            });
+            return false;
         } else {
 
             $("#tbl-vendor-pic").sapTable({
-                url: base_url+"master/vendor/pic_vendor_json/" + vendor_code,
+                url: "<?php echo base_url('master/vendor/pic_vendor_json/'); ?>" + vendor_code,
                 cSearch: {
                     'vendor_pic_name': 'Name',
                     'position_name': 'Position',
@@ -86,10 +88,18 @@
                 },
                 showSearch: true,
                 formatters: {
-                    "aksi_pic": function () {
-                        return "<a href='javascript:void(0)' class='btn btn-warning btn-xs' onclick='editPICRR(\"" + vendor_code + "\",\"" + rows.vendor_pic_email + "\");return false;'>Edit</a> \n\
-                          <a href='javascript:void(0)' onclick='delPIC(\"" + vendor_code + "\",\"" + rows.vendor_pic_email + "\");return false;' class='btn btn-danger btn-xs'>Delete</a>"
+                    "aksi_pic" : function(){
+                        var aksi = "CUOLUM";
+                        return aksi;
                     }
+                    /*
+                    "aksi_pic_vendor": function () {
+                        var button = "<a href='javascript:void(0)' class='btn btn-warning btn-xs' onclick='editPIC(\"" + code_customer + "\",\"" + rows.vendor_pic_email + "\");return false;'>Edit</a> \n\
+                <a href='javascript:void(0)' onclick='delPIC(\"" + vendor_code + "\",\"" + rows.vendor_pic_email + "\");return false;' class='btn btn-danger btn-xs'>Delete</a>";
+                        return button;
+                    }
+                    */
+
                 }
 
             });
@@ -108,7 +118,7 @@
         var url;
         var dt = {vendor_code: vendor_code, dtpost: dtVendorPIC};
         //console.log(dt);
-        url = base_url+"master/vendor/pro_store_vendor_pic";
+        url = "<?php echo base_url('master/vendor/pro_store_vendor_pic'); ?>";
         $.ajax({
             type: "post",
             url: url,
@@ -116,8 +126,9 @@
             dataType: "json",
             success: function (hasil) {
                 if (hasil.success == true) {
-                    $("#tbl-vendor-pic").sapTable_refresh();
-                     
+                    $("#tbl-vendor-pic").refresh_sapTable({
+                        url: "<?php echo base_url('master/vendor/pic_vendor_json/'); ?>" + vendor_code
+                    });
                     $(".vendor_pic").val("");
                     $("#vendor_pic_name").focus();
                 }
@@ -134,8 +145,10 @@
         var vcode = $("#vendor_code").val();
 
         if ($("#tbl-vendor-pic").hasClass("sapTable")) {
-            $("#tbl-vendor-pic").sapTable_refresh();
-             
+            $("#tbl-vendor-pic").refresh_sapTable({
+                url: "<?php echo base_url('master/vendor/pic_vendor_json/'); ?>" + vcode
+            });
+            return false;
         } else {
             if (vendor_code != "") {
                 $("#tbl-vendor-pic").sapTable({
@@ -146,11 +159,10 @@
                         'a.vendor_pic_phone': 'Phone',
                         'a.vendor_pic_email': 'Email'
                     },
-                    formatters: {
-                        "aksi_pic": function () {
-                            return "<a href='javascript:void(0)' class='btn btn-warning btn-xs' onclick='editPICRR(\"" + vcode + "\",\"" + rows.vendor_pic_email + "\");return false;'>Edit</a> \n\
+                    formatters: function () {
+                        //console.log(rows);
+                        return "<a href='javascript:void(0)' class='btn btn-warning btn-xs' onclick='editPICRR(\"" + vcode + "\",\"" + rows.vendor_pic_email + "\");return false;'>Edit</a> \n\
                           <a href='javascript:void(0)' onclick='delPIC(\"" + vcode + "\",\"" + rows.vendor_pic_email + "\");return false;' class='btn btn-danger btn-xs'>Delete</a>"
-                        }
                     }
                 });
             }
@@ -170,8 +182,10 @@
                 dataType: 'json',
                 success: function (hasil) {
                     if (hasil.success == true) {
-                        
-                        $("#tbl-vendor-pic").sapTable_refresh();
+                        $("#tbl-vendor-pic").refresh_sapTable({
+                            url: "<?php echo base_url('master/vendor/pic_vendor_json/'); ?>" + vendor_code
+                        });
+                        //alert('kehapus');
                     }
                 }
             })
@@ -224,6 +238,12 @@
 
 
     $("#refrespic").click(function () {
+        /*
+         var vendor_code = $("#vendor_code").val();
+         $("#tbl-vendor-pic").refresh_sapTable({
+         url: "<?php echo base_url('master/vendor/pic_vendor_json/'); ?>" + vendor_code
+         });
+         */
         $("#tbl-vendor-pic").sapTable_refresh();
     });
 

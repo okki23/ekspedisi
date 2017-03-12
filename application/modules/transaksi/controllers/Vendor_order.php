@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Vendor_order extends Parent_Controller {
 
-    protected $_column_order = array('id', 'vendor_code', 'vendor_top', 'vendor_address', 'vendor_phone', 'vendor_name', 'vendor_order_code', 'id_pic_vendor', 'pic_vendor_phone', 'date_order', 'date_pickup_order', 'estimation_date_arrival', 'type_service', 'payment_type', 'delivery_type', 'delivery_point', 'order_create', 'id_traffic_name', 'traffic_phone', 'special_instruction', 'vendor_order_status', 'ppn', 'pph', 'ppn_val', 'pph_val', 'amount_dp', 'amount_dp_date', 'amount_dp_debt',  'overnight', 'price_overnight', 'overnight_plus', 'netto_vendor');
+    protected $_column_order = array('id','vendor_code','vendor_top','vendor_address','vendor_phone','vendor_name','vendor_order_index','id_pic_vendor','pic_vendor_phone','date_order','vendor_order_status','date_pickup_order','estimation_date_arrival','type_service','cubication','tonase','payment_type','delivery_type','delivery_point','order_create','id_traffic_name','traffic_phone','special_instruction','vendor_order_status','no_ba','no_cn','upload_ba','upload_cn','ppn','pph','ppn_val','pph_val','overnight_plus','amount_sales','amount_dp','amount_dp_date','amount_dp_debt','vendor_over_weight','vendor_orver_price_weight','overnight','price_overnight','netto_vendor','driver_vendors','no_vehicle','id_krani','u_status','id_group','id_divisi');
 
     function __construct() {
         parent::__construct();
@@ -40,14 +40,14 @@ class Vendor_order extends Parent_Controller {
     }
     
     /*
-     public function get_so_code() {
+     public function get_po_code() {
         $code = $this->input->post('code');
         $postcode = "PO" . $code . date('dmy') . $this->transaksi_id();
         echo json_encode($postcode);
     }
      * 
      */
-    public function get_print_all_so_fields() {
+    public function get_print_all_po_fields() {
         header("Content-Type: application/force-download");
         header("Cache-Control: no-cache, must-revalidate");
         header("Expires: Sat, 26 Jul 2010 05:00:00 GMT");
@@ -120,8 +120,8 @@ class Vendor_order extends Parent_Controller {
 
         //$this->db->select($vs);
         //$this->db->from('t_po_fix a');
-        //$this->db->join('m_vendor b', 'b.vendor_code=a.cust_code');
-        $dataparent = $this->vendor_order_m->get_list_parent_so_print($vs);
+        //$this->db->join('m_vendor b', 'b.vendor_code=a.ven_code');
+        $dataparent = $this->vendor_order_m->get_list_parent_po_print($vs);
 
         foreach ($dataparent as $you) {
             $fieldName = explode(",", $vs);
@@ -133,7 +133,7 @@ class Vendor_order extends Parent_Controller {
                 echo "<td style='width:10%;' >" . $you->$parsing[1] . "</td>";
 
                 if ($parsing[1] == 'vendor_order_code') {
-                    $datachild = $this->vendor_order_m->get_list_child_so_print($you->$parsing[1]);
+                    $datachild = $this->vendor_order_m->get_list_child_po_print($you->$parsing[1]);
                 }
             }
             echo "</tr>";
@@ -172,8 +172,8 @@ class Vendor_order extends Parent_Controller {
         echo json_encode($datalast);
     }
 
-    public function cek_child_so($cust_code) {
-        $this->db->where('vendor_order_code', $cust_code);
+    public function cek_child_so($ven_code) {
+        $this->db->where('vendor_order_code', $ven_code);
         return $this->db->get('t_po_fix_sub');
     }
 
@@ -244,24 +244,24 @@ class Vendor_order extends Parent_Controller {
                 
     }
 
-    public function print_so_by_id($id) {
-        $get_so_code = $this->vendor_order_m->get_so_code($id);
+    public function print_po_by_id($id) {
+        $get_po_code = $this->vendor_order_m->get_po_code($id);
         //echo $this->db->last_query();
         //exit();
         header("Content-Type: application/force-download");
         header("Cache-Control: no-cache, must-revalidate");
         header("Expires: Sat, 26 Jul 2010 05:00:00 GMT");
-        header("content-disposition: attachment;filename=vendor_order'" . $get_so_code->vendor_code . "'.xls");
+        header("content-disposition: attachment;filename=vendor_order'" . $get_po_code->vendor_code . "'.xls");
 
 
         /*
           $this->db->select('a.*,b.vendor_name');
           $this->db->from('t_po_fix a');
-          $this->db->join('m_vendor b','b.vendor_code=>a.cust_code');
+          $this->db->join('m_vendor b','b.vendor_code=>a.ven_code');
           $this->db->where('id',$id);
          * 
          */
-        $this->db->where('cust_code', $get_so_code->vendor_code);
+        $this->db->where('ven_code', $get_po_code->vendor_code);
         //$getfirst = $this->db->get('t_po_fix')->row();
         //$data = $this->vendor_order_m->print_all_so();
         $data = $this->db->get('t_po_fix')->result();
@@ -283,7 +283,7 @@ class Vendor_order extends Parent_Controller {
             echo "<tr>
                    <td>" . $v->id . "</td>
                    <td>" . $v->vendor_order_code . "</td>
-                   <td>" . $get_so_code->vendor_name . "</td>
+                   <td>" . $get_po_code->vendor_name . "</td>
                    <td>" . $v->origin . "</td>
                    <td>" . $v->province . "</td>
                    <td>" . $v->district . "</td>
@@ -292,7 +292,7 @@ class Vendor_order extends Parent_Controller {
                    <td>" . $v->address . "</td>
                    <td> Rp. " . $v->price . "</td>
                    </tr>";
-            $this->db->where('id_primary_so', $v->id);
+            $this->db->where('id_primary_po', $v->id);
             $dataset = $this->db->get('t_po_fix_sub')->result();
             if (count($dataset) > 0) {
                 foreach ($dataset as $ky => $vl) {
@@ -315,12 +315,13 @@ class Vendor_order extends Parent_Controller {
         echo " </table>";
     }
 
-    public function print_so_final($id) {
+    public function print_po_final($id) {
         $data['title'] = $this->data['meta_title'];
         $data['favicon'] = $this->data['favicon'];
-        $data['view'] = 'transaksi/vendor_order/so_final';
+        $data['view'] = 'transaksi/vendor_order/po_final';
         $data['idprint'] = $id;
         $data['list_a'] = $this->vendor_order_m->get_list_utama_final_a($id);
+        //echo $this->db->last_query();
         $data['list_b'] = $this->vendor_order_m->get_list_utama_final_b($data['list_a']->vendor_code);
         //$data['list_c'] = $this->vendor_order_m->get_list_utama_final_c($id);
 
@@ -328,11 +329,11 @@ class Vendor_order extends Parent_Controller {
         //$this->load->view('transaksi/vendor_order/so_final');
     }
 
-    public function so_final_pdf($id) {
-
+    public function po_final_pdf($id) {
         $this->load->library("pdf");
-        $data['judul'] = 'Customer Order Print';
+        $data['judul'] = 'Vendor Order Print';
         $data['idprint'] = $id;
+        $data['list'] = 'ok';
         $data['list_a'] = $this->vendor_order_m->get_list_utama_final_a($id);
         $data['list_b'] = $this->vendor_order_m->get_list_utama_final_b($data['list_a']->vendor_code);
         $this->pdf->setPrintHeader(false);
@@ -345,10 +346,12 @@ class Vendor_order extends Parent_Controller {
         $this->pdf->AddPage("P", "A4");
         // set font
         $this->pdf->SetFont("helvetica", "", 9);
-        $html = $this->load->view('transaksi/vendor_order/pdf_so', $data, true);
+        $html = $this->load->view('transaksi/vendor_order/pdf_po', $data, true);
 
         $this->pdf->writeHTML($html, true, false, true, false, "");
-        $this->pdf->Output("Customer Order Information.pdf", "I");
+        ob_start();
+        $this->pdf->Output("Vendor Order Information.pdf", "I");
+        ob_end_flush(); 
     }
 
     public function get_val_ltl() {
@@ -379,7 +382,24 @@ class Vendor_order extends Parent_Controller {
         //echo $this->db->last_query();
         echo json_encode($res);
     }
-
+    public function get_trans_po_number(){
+        $isi = $this->input->post('isi');
+        $qry = $this->db->query("select a.*,b.sales_order_code from m_customer a 
+                                left join t_so_fix b on b.cust_code = a.customer_code
+                                where a.id = '$isi' ")->result();
+            echo "<option value=''>--Pilih--</option>";
+        foreach($qry as $listc){
+            echo "<option value=".$listc->sales_order_code."> ".$listc->sales_order_code."</option>";
+        }
+        //echo json_encode($qry);
+        
+    }
+    
+    public function get_omzet(){
+        $id_noso = $this->input->post('id_noso');
+        $qry = $this->db->query("select * from t_so_fix where sales_order_code = '$id_noso'")->row();
+        echo json_encode($qry);
+    }
     public function get_call_ltl() {
         $origin = $this->input->post('origin');
         $custcode = $this->input->post('custcode');
@@ -554,21 +574,24 @@ class Vendor_order extends Parent_Controller {
 
         if ($id != NULL || $id != '') {
             $data['list'] = $this->vendor_order_m->get_all($id);
-            $data['vendor_order_code'] = $data['list']->vendor_order_code;
+            $data['vendor_order_index'] = $data['list']->vendor_order_index;
             $data['order_create'] = $data['list']->order_create;
             $data['pic_vendor_phone'] = '';
+            //$data['list_cust'] = $this->vendor_order_m->get_list_cust_om();
         } else {
             $data['list'] = $this->vendor_order_m->get_new();
-            $data['vendor_order_code'] = "QC" . date('dmy') . $this->transaksi_id();
+            $data['vendor_order_index'] = "PO" . date('dmy') . $this->transaksi_id();
             $data['order_create'] = $this->session->userdata('username');
             $data['pic_vendor_phone'] = $data['list']->pic_vendor_phone;
+            //$data['list_cust'] = $this->vendor_order_m->get_list_cust_om();
         }
-
+        $data['list_cust'] = $this->vendor_order_m->get_list_cust_om();
         //$this->load->model('position_m');
         //$data['list_position'] = $this->position_m->get();
         //var_dump($data['list']);
         //$data['idpos'] = $this->get_last_id_post();
         $data['title'] = $this->data['meta_title'];
+        $data['list_krani'] = $this->vendor_order_m->list_krani();
         $data['favicon'] = $this->data['favicon'];
         $data['list_traffic'] = $this->vendor_order_m->list_traffic();
         $data['form_url'] = 'transaksi/vendor_order/store';
@@ -585,6 +608,10 @@ class Vendor_order extends Parent_Controller {
     }
 
     public function pro_store() {
+        //$arpost = $this->input->post();
+        //print_r($arpost);
+        //exit();
+        
         $datapos = $this->vendor_order_m->array_from_post($this->_column_order);
                 
         //var_dump($this->_column_order);
@@ -642,7 +669,7 @@ class Vendor_order extends Parent_Controller {
         }
     }
 
-    public function get_so_code() {
+    public function get_po_codes() {
         $prefix = 'SO';
         $code = $prefix . $this->input->post('code');
         $date = date('dmy');
@@ -736,9 +763,9 @@ class Vendor_order extends Parent_Controller {
         }
     }
 
-    public function get_detail_so_fix() {
+    public function get_detail_po_fix() {
         $query = $this->uri->segment(4);
-        $data = $this->vendor_order_m->get_detail_so_fix($query);
+        $data = $this->vendor_order_m->get_detail_po_fix($query);
 
 
 
@@ -768,6 +795,7 @@ class Vendor_order extends Parent_Controller {
     }
 
     public function get_list_po_fix() {
+        
         $query = $this->uri->segment(4);
         $data = $this->vendor_order_m->get_list_po_fix($query);
         //echo $this->db->last_query();
@@ -785,8 +813,9 @@ class Vendor_order extends Parent_Controller {
                 'origin' => $list->origin,
                 'province' => $list->province,
                 'vendor_order_code' => $list->vendor_order_code,
-                'vendor_order_status' => strtoupper($list->vendor_order_status),
+                'vo_status' => strtoupper($list->vo_status),
                 'date_order' => $list->date_order,
+                'vendor_order_status' => strtoupper($list->vendor_order_status),
                 'district' => $list->district,
                 'vehicle' => $list->vehicle,
                 'type_service' => strtoupper($list->type_service),
@@ -879,11 +908,15 @@ class Vendor_order extends Parent_Controller {
         echo json_encode($data);
     }
 
-    public function save_qc_of_so() {
+    public function save_qc_of_po() {
         $data = array('id' => $this->input->post('idsofix'),
             'origin' => $this->input->post('origin'),
             'province' => $this->input->post('province'),
             'island_single' => $this->input->post('island_single'),
+            'val_omzet' => $this->input->post('val_omzet'),
+            'id_customer_names' => $this->input->post('id_customer_names'),
+            'id_noso' => $this->input->post('id_noso'),
+            'vo_status' => $this->input->post('vo_status'),
             'vendor_order_code' => $this->input->post('vendor_order_code'),
             'vendor_order_status' => $this->input->post('vendor_order_status'),
             'date_order' => $this->input->post('date_order'),
@@ -899,7 +932,7 @@ class Vendor_order extends Parent_Controller {
             'address' => $this->input->post('address'),
             'lead_time' => $this->input->post('lead_time'),
             'price' => $this->input->post('price'),
-            'cust_code' => $this->input->post('cust_code'),
+            'ven_code' => $this->input->post('ven_code'),
             'service_mode' => $this->input->post('service_mode'),
             'tot_satuan' => $this->input->post('tot_satuan')
         );
@@ -908,6 +941,10 @@ class Vendor_order extends Parent_Controller {
             'province' => $data['province'],
             'island_single' => $data['island_single'],
             'district' => $data['district'],
+            'id_customer_names' => $data['id_customer_names'],
+            'id_noso' => $data['id_noso'],
+            'vo_status' => $data['vo_status'],
+            'val_omzet' => $data['val_omzet'],
             'vendor_order_code' => $data['vendor_order_code'],
             'date_order' => $data['date_order'],
             'vendor_order_status' => $data['vendor_order_status'],
@@ -924,18 +961,18 @@ class Vendor_order extends Parent_Controller {
             'address' => $data['address'],
             'lead_time' => $data['lead_time'],
             'price' => $data['price'],
-            'cust_code' => $data['cust_code']);
+            'ven_code' => $data['ven_code']);
         if ($data['id'] == '' || $data['id'] == NULL) {
-            $result = $this->vendor_order_m->save_so_fix($data);
+            $result = $this->vendor_order_m->save_po_fix($data);
         } else {
-            $result = $this->vendor_order_m->update_so_fix($dataupt, $data['id']);
+            $result = $this->vendor_order_m->update_po_fix($dataupt, $data['id']);
         }
         echo $this->db->last_query();
         /*
           if($data['id'] == '' || $data['id'] == NULL){
-          $result = $this->vendor_order_m->save_so_fix($data);
+          $result = $this->vendor_order_m->save_po_fix($data);
           }
-          $result = $this->vendor_order_m->update_so_fix($dataupt,$data['id']);
+          $result = $this->vendor_order_m->update_po_fix($dataupt,$data['id']);
           //echo $this->db->last_query();
          */
         if ($result) {
@@ -952,11 +989,11 @@ class Vendor_order extends Parent_Controller {
         echo json_encode($show);
     }
 
-    public function save_qc_of_so_multi() {
+    public function save_qc_of_po_multi() {
         $data = array('id' => $this->input->post('idsosub'),
-            'id_primary_so' => $this->input->post('soparent'),
+            'id_primary_po' => $this->input->post('soparent'),
             'origin' => $this->input->post('origin_sub'),
-            'so_primary' => $this->input->post('soprimary'),
+            'po_primary' => $this->input->post('soprimary'),
             'province' => $this->input->post('province_sub'),
             'district' => $this->input->post('district_sub'),
             'vehicle' => $this->input->post('vehicle_sub'),
@@ -968,13 +1005,13 @@ class Vendor_order extends Parent_Controller {
             'address' => $this->input->post('address_sub'),
             'lead_time' => $this->input->post('lead_time_sub'),
             'price' => $this->input->post('price_sub'),
-            'cust_code' => $this->input->post('cust_code')
+            'ven_code' => $this->input->post('ven_code')
         );
 
         $dataupt = array('origin' => $data['origin'],
-            'id_primary_so' => $data['id_primary_so'],
+            'id_primary_po' => $data['id_primary_po'],
             'province' => $data['province'],
-            'so_primary' => $data['so_primary'],
+            'po_primary' => $data['po_primary'],
             'district' => $data['district'],
             'vehicle' => $data['vehicle'],
             'district_info' => $data['district_info'],
@@ -985,12 +1022,12 @@ class Vendor_order extends Parent_Controller {
             'address' => $data['address'],
             'lead_time' => $data['lead_time'],
             'price' => $data['price'],
-            'cust_code' => $data['cust_code']);
+            'ven_code' => $data['ven_code']);
 
         if ($data['id'] == '' || $data['id'] == NULL) {
-            $result = $this->vendor_order_m->save_so_fix_multi($data);
+            $result = $this->vendor_order_m->save_po_fix_multi($data);
         }
-        $result = $this->vendor_order_m->update_so_fix_multi($dataupt, $data['id'], $data['id_primary_so']);
+        $result = $this->vendor_order_m->update_po_fix_multi($dataupt, $data['id'], $data['id_primary_po']);
         if ($result) {
             echo json_encode('success:true');
         } else {
@@ -998,9 +1035,9 @@ class Vendor_order extends Parent_Controller {
         }
     }
 
-    public function get_delete_so_fix() {
+    public function get_delete_po_fix() {
         $query = $this->input->post('query');
-        $data = $this->vendor_order_m->get_delete_so_fix($query);
+        $data = $this->vendor_order_m->get_delete_po_fix($query);
         if ($data) {
             echo json_encode('status:true');
         } else {
@@ -1020,9 +1057,9 @@ class Vendor_order extends Parent_Controller {
         echo json_encode($data);
     }
 
-    public function get_delete_so_fix_multi() {
+    public function get_delete_po_fix_multi() {
         $query = $this->uri->segment(4);
-        $data = $this->vendor_order_m->get_delete_so_fix_multi($query);
+        $data = $this->vendor_order_m->get_delete_po_fix_multi($query);
         if ($data) {
             echo json_encode('status:true');
         } else {
@@ -1035,7 +1072,48 @@ class Vendor_order extends Parent_Controller {
         $data = $this->vendor_order_m->get_edit_po_fix_multi($query);
         echo json_encode($data);
     }
+    
+     public function get_driver_vendors() {
+        $id = $this->uri->segment(4);
+        $get = $this->vendor_order_m->get_driver_vendors($id);
 
+        //var_dump($get);
+        echo "<option value=''>--Pilih--</option>";
+        if ($get > 0) {
+            foreach ($get as $list) {
+                echo "<option value=".$list->vendor_driver_id."> ".$list->vendor_driver_name." </option>";
+            }
+        } else {
+            echo "<option value=''>  </option>";
+        }
+    }
+
+    public function get_nopol_vehichle() {
+        $id = $this->uri->segment(4);
+        $get = $this->vendor_order_m->get_nopol_vehichle($id);
+
+        //var_dump($get);
+        echo "<option value=''>--Pilih--</option>";
+        if ($get > 0) {
+            foreach ($get as $list) {
+                echo "<option value=".$list->vendor_vehicle_id."> ".$list->vendor_vehicle_no." </option>";
+            }
+        } else {
+            echo "<option value=''>  </option>";
+        }
+    }
+    
+   public function get_po_code() {
+        $code = $this->input->post('code');
+        $postcode = "PO" . $code . date('dmy') . $this->transaksi_id_po();
+        echo json_encode($postcode);
+    }
+    
+     public function get_po_code_num() {
+        $code = $this->input->post('code');
+        $postcode = "PO" . $code . date('dmy') . $this->transaksi_id_po_num();
+        echo json_encode($postcode);
+    }
     public function get_vendor_name_json() {
         $query = $this->input->get('query');
         $date = date('dmy');
@@ -1074,6 +1152,52 @@ class Vendor_order extends Parent_Controller {
         echo json_encode($get);
     }
 
+    public function transaksi_id_po() {
+        $data = $this->vendor_order_m->get_last_no_po();
+        $lastid = $data->row();
+        $idnya = $lastid->id;
+
+        $param = '';
+        if ($idnya == '') { // bila data kosong
+            $ID = $param . "001";
+            //00000001
+        } else {
+            $MaksID = $idnya;
+            $MaksID++;
+
+            if ($MaksID < 10)
+                $ID = $param . "00" . $MaksID;
+            else if ($MaksID < 100)
+                $ID = $param . "0" . $MaksID;
+            else
+                $ID = $MaksID;
+        }
+
+        return $ID;
+    }
+    public function transaksi_id_po_num() {
+        $data = $this->vendor_order_m->get_last_no_po_num();
+        $lastid = $data->row();
+        $idnya = $lastid->id;
+
+        $param = '';
+        if ($idnya == '') { // bila data kosong
+            $ID = $param . "001";
+            //00000001
+        } else {
+            $MaksID = $idnya;
+            $MaksID++;
+
+            if ($MaksID < 10)
+                $ID = $param . "00" . $MaksID;
+            else if ($MaksID < 100)
+                $ID = $param . "0" . $MaksID;
+            else
+                $ID = $MaksID;
+        }
+
+        return $ID;
+    }
     public function transaksi_id() {
         $data = $this->vendor_order_m->get_last_no();
         $lastid = $data->row();

@@ -321,18 +321,15 @@
         } else {
             $("#tbl-customer-pic").sapTable({
                 url: base_url + "master/customer/pic_customer_json/" + code_customer,
-                showSearch: true,
                 cSearch: {
                     'customer_pic_name': 'Name',
                     'position_name': 'Position',
                     'customer_pic_phone': 'Phone',
                     'customer_pic_email': 'Email'
                 },
-                formatters: {
-                    "aksi": function () {
-                            return "<a href='javascript:void(0)' class='btn btn-warning btn-xs' onclick='editPIC(\"" + code_customer + "\",\"" + rows.customer_pic_email + "\");return false;'>Edit</a> \n\
-                            <a href='javascript:void(0)' onclick='delPIC(\"" + code_customer + "\",\"" + rows.customer_pic_email + "\");return false;' class='btn btn-danger btn-xs'>Delete</a>"
-                    }
+                formatters: function () {
+                    return "<a href='javascript:void(0)' class='btn btn-warning btn-xs' onclick='editPIC(\"" + code_customer + "\",\"" + rows.customer_pic_email + "\");return false;'>Edit</a> \n\
+                      <a href='javascript:void(0)' onclick='delPIC(\"" + code_customer + "\",\"" + rows.customer_pic_email + "\");return false;' class='btn btn-danger btn-xs'>Delete</a>"
                 }
             });
         }

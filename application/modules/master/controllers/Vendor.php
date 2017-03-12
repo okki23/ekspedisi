@@ -548,7 +548,8 @@ class Vendor extends Parent_Controller {
 
     function pro_delete_vendor_pic() {
         $dtpost = $this->input->post();
-
+        //var_dump($dtpost);
+        //exit();
         $this->load->model('Pic_vendor_m');
         $result = $this->Pic_vendor_m->delete_pic_vendor($dtpost);
         //echo $this->db->last_query();

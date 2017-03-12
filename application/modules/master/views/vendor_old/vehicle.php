@@ -158,6 +158,7 @@
                         <th data-options="vendor_vehicle_cubication">Cubication</th>
                         <th data-options="vendor_vehicle_tonase">Tonase</th>
                         <th data-options="opsi">Option</th>
+                        <th data-options="cek">Check</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -198,11 +199,8 @@
                     showSearch: true,
                     formatters: {
                         "opsi": function () {
-                            
-                                    return "<a href='javascript:void(0)' class='btn btn-warning btn-xs' onclick='editvhc(\"" + vendor_code + "\",\"" + rows.vendor_vehicle_no + "\");return false;'>Edit</a> \n\
-                            <a href='javascript:void(0)' onclick='delvhc(\"" + vendor_code + "\",\"" + rows.vendor_vehicle_no + "\");return false;' class='btn btn-danger btn-xs'>Delete</a>";
-        
-
+                            return "<a href='javascript:void(0)' class='btn btn-warning btn-xs' onclick='editvhc(\"" + vendor_code + "\",\"" + rows.vendor_vehicle_no + "\");return false;'>Edit</a> \n\
+                            <a href='javascript:void(0)' onclick='delvhc(\"" + vendor_code + "\",\"" + rows.vendor_vehicle_no + "\");return false;' class='btn btn-danger btn-xs'>Delete</a>"
                         }
                     }
                 });
@@ -412,11 +410,11 @@
 
         $("#refreshvhc").on('click', function () {
             /*
-             var vendor_code = $("#vendor_code").val();
-             $("#tbl-vendor-vehicle").refresh_sapTable({
-             url: "<?php echo base_url('master/vendor/vehicle_vendor_json/'); ?>" + vendor_code
-             });
-             */
+            var vendor_code = $("#vendor_code").val();
+            $("#tbl-vendor-vehicle").refresh_sapTable({
+                url: "<?php echo base_url('master/vendor/vehicle_vendor_json/'); ?>" + vendor_code
+            });
+            */
             $("#tbl-vendor-vehicle").sapTable_refresh();
         });
 
@@ -529,10 +527,10 @@
             success: function (hasil) {
                 if (hasil.success == true) {
                     /*
-                     $("#tbl-vendor-vehicle").refresh_sapTable({
-                     url: "<?php echo base_url('master/vendor/vehicle_vendor_json/'); ?>" + vendor_code
-                     });
-                     */
+                    $("#tbl-vendor-vehicle").refresh_sapTable({
+                        url: "<?php echo base_url('master/vendor/vehicle_vendor_json/'); ?>" + vendor_code
+                    });
+                    */
                     $("#tbl-vendor-vehicle").sapTable_refresh();
                     $(".vendor_vehicle").val("");
                     $("#vendor_vehicle_name").focus();

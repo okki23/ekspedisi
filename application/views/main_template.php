@@ -36,7 +36,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         <script src="<?php echo base_url('assets/jquery-1.12.4.js'); ?>"></script>
         
-        <script src="<?php echo base_url('assets/js/saptable.0.3.js'); ?>"></script>
+        <script src="<?php echo base_url('assets/js/saptable.0.4.js'); ?>"></script>
 
         <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/plugins/bootstrap-datepicker/css/datepicker.css'); ?>" />
         <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/plugins/bootstrap-timepicker/compiled/timepicker.css'); ?>" />

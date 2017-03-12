@@ -1,4 +1,4 @@
-<?php
+                                                                                                                                  <?php
 
 /*
  * To change this template, choose Tools | Templates
@@ -22,10 +22,11 @@ class Vendor_order_m extends Parent_Model {
     protected $_primary_key = 'id';
     protected $_primary_filter = 'intval';
     
-    protected $_column_order = array('id','vendor_code','vendor_top','vendor_address','vendor_phone','vendor_name','vendor_order_code','id_pic_vendor','pic_vendor_phone','date_order','date_pickup_order','estimation_date_arrival','type_service','payment_type','delivery_type','delivery_point','order_create','id_traffic_name','traffic_phone','special_instruction','vendor_order_status','ppn','pph','ppn_val','pph_val','amount_dp','amount_dp_date','amount_dp_debt','overnight','price_overnight','overnight_plus','netto_vendor');
-    protected $_column_search = array('id','vendor_code','vendor_top','vendor_address','vendor_phone','vendor_name','vendor_order_code','id_pic_vendor','pic_vendor_phone','date_order','date_pickup_order','estimation_date_arrival','type_service','payment_type','delivery_type','delivery_point','order_create','id_traffic_name','traffic_phone','special_instruction','vendor_order_status','ppn','pph','ppn_val','pph_val','amount_dp','amount_dp_date','amount_dp_debt','overnight','price_overnight','overnight_plus','netto_vendor');
+    protected $_column_order = array('id','vendor_code','vendor_top','vendor_address','vendor_phone','vendor_name','vendor_order_index','id_pic_vendor','pic_vendor_phone','date_order','vendor_order_status','date_pickup_order','estimation_date_arrival','type_service','cubication','tonase','payment_type','delivery_type','delivery_point','order_create','id_traffic_name','traffic_phone','special_instruction','vendor_order_status','no_ba','no_cn','upload_ba','upload_cn','ppn','pph','ppn_val','pph_val','overnight_plus','amount_sales','amount_dp','amount_dp_date','amount_dp_debt','vendor_over_weight','vendor_orver_price_weight','overnight','price_overnight','netto_vendor','driver_vendors','no_vehicle','id_krani','u_status','id_group','id_divisi');
+    protected $_column_search = array('id','vendor_code','vendor_top','vendor_address','vendor_phone','vendor_name','vendor_order_index','id_pic_vendor','pic_vendor_phone','date_order','vendor_order_status','date_pickup_order','estimation_date_arrival','type_service','cubication','tonase','payment_type','delivery_type','delivery_point','order_create','id_traffic_name','traffic_phone','special_instruction','vendor_order_status','no_ba','no_cn','upload_ba','upload_cn','ppn','pph','ppn_val','pph_val','overnight_plus','amount_sales','amount_dp','amount_dp_date','amount_dp_debt','vendor_over_weight','vendor_orver_price_weight','overnight','price_overnight','netto_vendor','driver_vendors','no_vehicle','id_krani','u_status','id_group','id_divisi');
     protected $_table_status = 'vendor_order_status';
     protected $_order_by = array('a.id' => 'desc');
+    
     public function array_from_post($fields) {
         $data = array();
         foreach ($fields as $field) {
@@ -40,6 +41,12 @@ class Vendor_order_m extends Parent_Model {
          $this->db->where('vendor_pic_email',$data['vendor_pic_email']);
          return $this->db->delete($this->_table_name);
         
+    }
+    
+    public function get_list_cust_om(){
+    
+            return $this->db->get('m_customer')->result();
+       
     }
     
     public function get_all($id = NULL){
@@ -59,7 +66,7 @@ class Vendor_order_m extends Parent_Model {
         return $this->db->get()->result();
     }
     
-    public function get_list_child_so_print($soprimary){
+    public function get_list_child_po_print($soprimary){
         
         $this->db->from('t_po_fix_sub');
         $this->db->where('po_primary',$soprimary);
@@ -87,13 +94,13 @@ class Vendor_order_m extends Parent_Model {
         return $this->db->get('t_quotation_vendor_detail')->result();
     }
     
-    public function cek_child_so($salcode){
+    public function cek_child_po($salcode){
         //$this->db->where('ven_code',$custcode);
         $this->db->where('po_primary',$salcode);
         return $this->db->get('t_po_fix_sub')->num_rows();
     }
     
-    public function list_child_so($salcode){
+    public function list_child_po($salcode){
         //$this->db->where('ven_code',$custcode);
         $this->db->where('po_primary',$salcode);
         return $this->db->get('t_po_fix_sub')->result();
@@ -123,10 +130,12 @@ class Vendor_order_m extends Parent_Model {
         return $this->db->get('t_quotation_vendor_detail')->row();
     }
     public function get_list_utama_final_a($id){
-        $this->db->select('a.*,b.vendor_pic_name as pic_name,c.employee_name as traffic_name');
+        $this->db->select('a.*,b.vendor_pic_name as pic_name,c.employee_name as traffic_name,d.vendor_driver_name,e.vendor_vehicle_no');
         $this->db->from('t_purchase_order a');
-        $this->db->join('m_pic_vendor b','b.vendor_pic_id=a.id_pic_vendor');
-        $this->db->join('m_employee c','c.id=a.id_traffic_name');
+        $this->db->join('m_pic_vendor b','b.vendor_pic_id=a.id_pic_vendor','left');
+        $this->db->join('m_employee c','c.id=a.id_traffic_name','left');
+        $this->db->join('m_driver_vendor d','d.vendor_driver_id = a.driver_vendors','left');
+        $this->db->join('m_vehicle_vendor e','e.vendor_vehicle_id = a.no_vehicle','left');
         $this->db->where('a.id',$id);
      
         return $this->db->get()->row();
@@ -161,23 +170,23 @@ class Vendor_order_m extends Parent_Model {
         return $this->db->get('t_quotation_vendor_detail')->row();
     }
     
-    public function save_so_fix($data){
+    public function save_po_fix($data){
         return $this->db->insert('t_po_fix', $data);
         
     }
     
-    public function update_so_fix($dataupt,$data){
+    public function update_po_fix($dataupt,$data){
         $this->db->set($dataupt);
         $this->db->where('id',$data);
         return $this->db->update('t_po_fix');
     }
     
-    public function save_so_fix_multi($data){
+    public function save_po_fix_multi($data){
         return $this->db->insert('t_po_fix_sub', $data);
         
     }
     
-    public function get_so_code($id){
+    public function get_po_code($id){
    
         $this->db->where('id',$id);
         return $this->db->get('t_purchase_order')->row();
@@ -186,10 +195,10 @@ class Vendor_order_m extends Parent_Model {
         //echo $this->db->last_query();
     }
     
-    public function update_so_fix_multi($dataupt,$idsosub,$id_primary_so){
+    public function update_po_fix_multi($dataupt,$idsosub,$id_primary_so){
         $this->db->set($dataupt);
         $this->db->where('id',$idsosub);
-        $this->db->where('id_primary_so',$id_primary_so);
+        $this->db->where('id_primary_po',$id_primary_so);
         return $this->db->update('t_po_fix_sub');
     }
     
@@ -220,12 +229,12 @@ class Vendor_order_m extends Parent_Model {
         return $this->db->get('t_po_fix_sub')->row();
     }
     
-    public function get_delete_so_fix($query){
+    public function get_delete_po_fix($query){
         $this->db->where('id',$query);
         return $this->db->delete('t_po_fix');
     }    
     
-    public function get_delete_so_fix_multi($query){
+    public function get_delete_po_fix_multi($query){
         $this->db->where('id',$query);
         return $this->db->delete('t_po_fix_sub');
     }   
@@ -256,23 +265,22 @@ case when (SUM(b.price)) IS NULL then a.price else (a.price + SUM(b.price)) end 
          $this->db->group_by('a.id');
          */
         
-        $this->db->select("a.*,a.id,a.ven_code,a.vendor_order_code,a.type_service,a.date_order,a.charge_option,a.vendor_order_status,a.price as main_price,
-CASE when a.type_service = 'ftl' THEN (a.price + SUM(b.price))  ELSE a.price END AS hasil");
+        $this->db->select("a.*, a.price as main_price, (CASE when a.type_service = 'ftl' THEN (a.price + case when COUNT(b.price)>0 THEN SUM(b.price) else 0 END) ELSE a.price END) AS hasil");
         $this->db->from('t_po_fix a');
         $this->db->join('t_po_fix_sub b', 'b.po_primary=a.vendor_order_code','left');
         $this->db->where('a.ven_code',$query);
-        $this->db->group_by('a.vendor_order_code');
+        $this->db->group_by('a.id');
         //$this->db->where('ven_code',$query);
         return $this->db->get()->result();
     }
     
-    public function get_detail_so_fix($query){
+    public function get_detail_po_fix($query){
        
          $this->db->select('a.*,a.price as main_price,
 case when (SUM(b.price)) IS NULL then 0 else (SUM(b.price)) end as totalsub,  
 case when (SUM(b.price)) IS NULL then a.price else (a.price + SUM(b.price)) end as hasil');
          $this->db->from('t_po_fix a');
-         $this->db->join('t_po_fix_sub b', 'b.id_primary_so=a.id','left');
+         $this->db->join('t_po_fix_sub b', 'b.id_primary_po=a.id','left');
          $this->db->where('a.id',$query);
          $this->db->group_by('a.id');
          
@@ -346,7 +354,34 @@ case when (SUM(b.price)) IS NULL then a.price else (a.price + SUM(b.price)) end 
         return $data;
         
     }
+        
+    public function get_driver_vendors($data) {
+        $this->db->where('vendor_code', $data);
+        //$this->db->group_by('vendor_driver_name');
+        return $this->db->get('m_driver_vendor')->result();
+    }
     
+     public function list_krani() {
+        return $this->db->where('id_position', '6')->get('m_employee')->result();
+    }
+
+
+    
+    public function get_nopol_vehichle($data) {
+        $this->db->where('vendor_code', $data);
+        //$this->db->group_by('vendor_vehicle_no');
+        return $this->db->get('m_vehicle_vendor')->result();
+    }
+
+    public function get_last_no_po(){
+		$query = $this->db->query("SELECT SUBSTR(MAX(vendor_order_index),-3) AS id  FROM t_purchase_order "); 
+		return $query;
+    }
+    
+    public function get_last_no_po_num(){
+		$query = $this->db->query("SELECT SUBSTR(MAX(vendor_order_code),-3) AS id  FROM t_po_fix "); 
+		return $query;
+    }
     public function get_last_no(){
 		$query = $this->db->query("SELECT SUBSTR(MAX(vendor_order_code),-3) AS id  FROM t_po_fix "); 
 		return $query;
